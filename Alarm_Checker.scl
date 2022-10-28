@@ -1,0 +1,70 @@
+function "Alarm_Checker" : Void
+
+var_input
+	AlarmsList : Array [0..20] of Word;
+end_var
+
+var_output
+	AlarmWord : Word;
+	Warning : Bool;
+	Alarm : Bool;
+	Shutdown : Bool;
+end_var
+
+var_in_out
+
+end_var
+
+var_temp
+	AlarmBits : Array [0..15] of Bool;
+	TempInner : Word;
+	TempOuter : Word;
+	i : Int;
+	j : Int;
+end_var
+
+var constant
+
+end_var
+
+TempOuter := 0;
+for i:=0 to 20
+do
+	// Parse Array
+	SCATTER(IN:=AlarmsList[i], OUT=>AlarmBits);
+	TempInner := 0;
+	if AlarmBits[0] or AlarmBits[1] then
+		TempInner := 1;
+	end_if;
+	if AlarmBits[2] or AlarmBits[3] then
+		TempInner := 2;
+	end_if;
+	if AlarmBits[4] or AlarmBits[5] then
+		TempInner := 3;
+	end_if;
+	if TempInner > TempOuter then
+		TempOuter := TempInner;
+	end_if;	
+end_for;
+case TempOuter of
+1:
+	Warning := true;
+	Alarm := false;
+	Shutdown := false;
+2:	
+	Alarm := true;
+	Warning := false;
+	Shutdown := false;
+3:	
+	Shutdown := true;
+	Warning := false;
+	Alarm := false;
+else
+	Warning := false;
+	Alarm := false;
+	Shutdown := false;
+end_case;
+AlarmWord := TempOuter;
+
+
+

@@ -1,0 +1,4 @@
+nominal pump speed = 70 %
+at about 7.3 gpm
+minimum pump speed = 40 %
+upper range value = 100 %

@@ -1,0 +1,51 @@
+// Define Function 
+function "High_Alarm_Logic" : Void
+
+var_input
+alarmON : bool;
+procVal : real;
+highAlarmSP : real;
+
+highAlarmPT: time;
+highAlarmShutdownPT : time;
+
+
+end_var
+
+var_output
+highAlarm : bool;
+lowAlarm : bool;
+highAlarmShutdown : bool;
+lowAlarmShutdown : bool;
+end_var
+
+var_in_out
+    ALTONH : TON_TIME;
+    SDTONH : TON_TIME;
+end_var
+
+var_temp
+alarmH : bool;
+end_var
+
+var constant
+
+end_var
+
+//High Alarm Logic
+if (#highAlarmPT <> t#0ms) and (#procVal > #highAlarmSP)
+then
+    #ALTONH(IN := #alarmON,
+            PT := #highAlarmPT);
+    alarmH := #ALTONH.Q;
+    #highAlarm := (#alarmH or #highAlarm) and not "Alarm_Ack_UI"; // Set Alarm
+end_if;
+
+// High Alarm Shutdown
+if (#highAlarmShutdownPT <> t#0ms)
+then
+    #SDTONH(IN := #alarmH,
+            PT := #highAlarmShutdownPT);
+    highAlarmShutdown := (#SDTONH.Q or #highAlarmShutdown) and not "Alarm_Shutdown_Ack_UI";
+end_if;
+

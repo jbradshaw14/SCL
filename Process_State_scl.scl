@@ -1,0 +1,38 @@
+FUNCTION "Process_State_scl" : Void
+
+VAR_INPUT
+    Start : BOOL;
+    Stop : BOOL;
+    DoneCondition : BOOL;
+    StopDoneCondition : BOOL;
+END_VAR
+
+VAR_OUTPUT
+    State : "ProcessState_udt";
+END_VAR
+
+VAR_IN_OUT
+
+END_VAR
+
+VAR_TEMP
+    TempAuto : BOOL;
+    TempStop : BOOL;
+    TempDone : BOOL;
+    TempStopDone : BOOL;
+END_VAR
+
+VAR CONSTANT
+
+END_VAR
+
+// Set & Latch Auto
+#TempAuto := NOT #TempStop
+              AND ((#Start AND NOT "HMI".ManualMode) OR #TempAuto);
+// Done
+#TempDone := (#TempAuto AND (#DoneCondition OR #TempDone));
+// Stop
+#TempStop := NOT "HMI".SystemEnable AND (#Stop OR #TempStop);
+// Stop Done
+#TempStopDone := #TempStop AND #StopDoneCondition;
+

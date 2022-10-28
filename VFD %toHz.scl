@@ -1,0 +1,1 @@
+"VFD %toHz" := ROUND("rInput") * 6000;

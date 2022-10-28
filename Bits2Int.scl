@@ -1,0 +1,22 @@
+function "Bit2Int" : Void
+
+var_input
+    in1 : bool;
+
+end_var
+
+var_output
+
+end_var
+
+var_in_out
+
+end_var
+
+var_temp
+
+end_var
+
+var constant
+
+end_var

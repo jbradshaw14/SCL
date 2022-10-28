@@ -1,0 +1,31 @@
+FUNCTION "Tank_Sim" : Void
+
+VAR_INPUT
+    InletPumpSpeed : REAL;  // 0 to 100%
+    OutletPumpSpeed : REAL; // 0 to 100%
+    TimeToFill : TIME; // seconds
+    HysteresisTime : TIME; // 1 second
+END_VAR
+
+VAR_OUTPUT
+    Level : REAL;
+END_VAR
+
+VAR_IN_OUT
+
+END_VAR
+
+VAR_TEMP
+    PreviousTime : TIME; // d/dt
+    InternalTime : TIME;  // system clock
+END_VAR
+
+VAR CONSTANT
+
+END_VAR
+
+Level := Level + (InletPumpSpeed - OutletPumpSpeed) * (TIME_TO_REAL(TIME() - PreviousTime) / TIME_TO_REAL(TimeToFill));
+
+IF Level > 100 THEN Level := 100; END_IF;
+IF Level < 0 THEN Level = 0; END_IF;
+PreviousTime := TIME();

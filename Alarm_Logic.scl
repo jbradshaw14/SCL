@@ -1,0 +1,89 @@
+// Define Function 
+function "Alarm_Logic" : Void
+
+// Setpoints from CONFIG DB
+var_input
+    alarmON : Bool;
+    procVal : Real;
+    Config  : "AnalogInput_cfg";
+end_var
+
+var_output.
+    AlarmWordOut : Word; //bit 0:hw 1:ha 2:hasd 3:lw 4:la 5:lasd 
+end_var
+
+var_in_out
+    ALTONH : TON_TIME;
+    ALTONL : TON_TIME;
+    SDTONH : TON_TIME;
+    SDTONL : TON_TIME;
+end_var
+
+var_temp
+Alarms : Array [0..15] of bool;
+end_var
+
+var constant
+
+end_var
+
+// High Warning Logic
+if (#procVal > #Config.HighWarningSP) and (#config.HighWarningSP <> 0.0) 
+then
+    #Alarms[0]:=true; // 1
+else
+    #Alarms[0]:=false;
+end_if;
+
+// Low Warning
+if (#procVal < #Config.LowWarningSP) and (#Config.LowWarningSP <> 0.0) 
+then
+    #Alarms[1]:=true; // 2
+else
+    #Alarms[1]:=false;
+end_if;
+
+//High Alarm Logic
+if (#Config.HighAlarmPT <> T#0ms) and (#procVal > #Config.HighAlarmSP)
+then
+    #ALTONH(IN:=#alarmON,
+            PT:=#Config.HighAlarmPT);
+    #Alarms[2]:=#ALTONH.Q; // 4
+else
+    #Alarms[2]:=false;
+end_if;
+
+// Low Alarm Logic
+if (#Config.LowAlarmPT <> T#0ms) and (#procVal < #Config.LowAlarmSP) 
+then
+    #ALTONL(IN:=#alarmON,
+            PT:=#Config.LowAlarmPT);
+    #Alarms[3]:=#ALTONL.Q; // 8
+else
+    #Alarms[3]:=false;
+end_if;
+
+// High Alarm Shutdown
+if (#Config.HighAlarmSdPT <> T#0ms)
+then
+    #SDTONH(IN:=#Alarms[1],
+            PT:=#Config.HighAlarmSdPT);
+    #Alarms[4]:=#SDTONH.Q; // 16
+else
+    #Alarms[4]:=false;
+end_if;
+
+// Low Alarm Shutdown
+if (#Config.LowAlarmSdPT <> T#0ms)
+then
+    #SDTONL(IN:=#Alarms[4],
+            PT:=#Config.LowAlarmSdPT);
+    #Alarms[5]:=#SDTONL.Q; // 32
+else
+    #Alarms[5]:=false;
+end_if;
+
+// Output alarm Word
+    GATHER(IN:=Alarms,
+           OUT=>AlarmWordOut);
+

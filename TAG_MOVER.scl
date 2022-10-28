@@ -1,0 +1,66 @@
+// Modbus********************************************
+
+// Idec 1
+"MB_DATA_DB".mbData[0].wData[0] := "Idec1 Output";
+"Idec1 Feedback" :="MB_DATA_DB".mbData[1].wData[0];
+
+// Idec 2
+"MB_DATA_DB".mbData[2].wData[0] := "Idec2 Output";
+"Idec2 Feedback":="MB_DATA_DB".mbData[3].wData[0];
+
+// Idec 3
+"MB_DATA_DB".mbData[4].wData[0] := "Idec3 Output";
+"Idec3 Feedback" :="MB_DATA_DB".mbData[5].wData[0];
+
+// Idec 4
+"MB_DATA_DB".mbData[6].wData[0] := "Idec4 Output";
+"Idec4 Feedback" :="MB_DATA_DB".mbData[7].wData[0];
+
+// VFD/P-200
+"MB_DATA_DB".mbData[8].wData[0] := "P-200 Run";
+"MB_DATA_DB".mbData[9].wData[0] := "P-200 Speed";
+"P-200 Status" :="MB_DATA_DB".mbData[10].wData[0];
+"P-200 Fault" :="MB_DATA_DB".mbData[11].wData[0];
+
+// VFD/P-300
+"MB_DATA_DB".mbData[12].wData[0] := "P-300 Run";
+"MB_DATA_DB".mbData[13].wData[0] := "P-300 Speed";
+"P-300 Status" :="MB_DATA_DB".mbData[14].wData[0];
+"P-300 Fault" :="MB_DATA_DB".mbData[15].wData[0];
+
+// AL2205 *********************************************
+//LSL
+"LSL-100" := "AL2205_DB".DI_P2[8];
+"LSL-200" := "AL2205_DB".DI_P2[10];
+"LSL-201" := "AL2205_DB".DI_P2[12];
+
+// MOV-100
+"AL2205_DB".DX_P2[7] := "MOV-100 Output";
+"MOV-100 Open" := "AL2205_DB".DI_P2[6];
+"MOV-100 Closed" := "AL2205_DB".DI_P2[14];
+
+//AL2205 P4
+// MOV-200
+"AL2205_DB".DX_P4[5] := "MOV-200 Output";
+"MOV-200 Open" := "AL2205_DB".DI_P4[0];
+"MOV-200 Closed" := "AL2205_DB".DI_P4[8];
+
+// MOV-201
+"AL2205_DB".DX_P4[6] := "MOV-201 Output";
+"MOV-201 Open" := "AL2205_DB".DI_P4[2];
+"MOV-201 Closed" := "AL2205_DB".DI_P4[10];
+
+//MOV-204
+"AL2205_DB".DX_P4[14] := "MOV-204 Output";
+"MOV-204 Open" := "AL2205_DB".DI_P4[4];
+"MOV-204 Closed" := "AL2205_DB".DI_P4[12];
+
+//MOV-300
+"AL2205_DB".DX_P4[13] := "MOV-300 Output";
+"MOV-300 Open" := "AL2205_DB".DI_P6[0];
+"MOV-300 Closed" := "AL2205_DB".DI_P6[8];
+
+//MOV-301
+"AL2205_DB".DX_P6[4] := "MOV-301 Output";
+"MOV-301 Open" := "AL2205_DB".DI_P6[2];
+"MOV-301 Closed" := "AL2205_DB".DI_P6[10];

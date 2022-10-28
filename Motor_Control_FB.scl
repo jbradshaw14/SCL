@@ -1,0 +1,29 @@
+function_block "MotorControlFB"
+
+var_input
+  On_PI : Bool;
+  Interlock : Bool;
+  Fault_Tag : Bool;
+end_var
+
+var_output
+  Output_Tag : Bool;
+  #Alarm : Bool;
+end_var
+
+var_in_out
+
+end_var
+
+var
+  On_UI : Bool;
+  TON : IEC_TIMER;
+end_var
+
+
+#Output_Tag := ("HMI".ManualMode and #On_PI and not #Interlock) or ("HMI".ManualMode and #On_UI);
+
+// Pump Fault
+if #Fault_Tag then
+  TON()
+#Alarm := (#Fault_Tag or #Alarm) and not "HMI".AlarmAck;
