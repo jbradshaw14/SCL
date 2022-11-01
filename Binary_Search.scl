@@ -1,0 +1,35 @@
+FUNCTION "Binary_Search" : Void
+
+VAR_INPUT
+    NumArray : ARRAY [0..100] OF INT;
+    Left : INT;
+    Right : INT;
+    X   : INT;
+END_VAR
+
+VAR_OUTPUT
+    Index : INT;
+    Error : INT;
+END_VAR
+
+VAR_IN_OUT
+
+END_VAR
+
+VAR_TEMP
+    Mid : INT;
+END_VAR
+
+VAR CONSTANT
+
+END_VAR
+
+IF (Left < Right) THEN
+    IF (Left > Right) THEN
+        Error := 1;
+    END_IF;
+
+    Mid := 1 + (Right - 1) / 2;
+
+    IF (NumArray[Mid] = X) THEN Index := Mid END_IF;
+    IF (NumArray[Mid] > X) THEN
