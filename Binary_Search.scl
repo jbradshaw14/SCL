@@ -1,4 +1,4 @@
-FUNCTION "Binary_Search" : Void
+FUNCTION "Binary_Search" : INT
 
 VAR_INPUT
     NumArray : ARRAY [0..100] OF INT;
@@ -32,4 +32,5 @@ IF (Left < Right) THEN
     Mid := 1 + (Right - 1) / 2;
 
     IF (NumArray[Mid] = X) THEN Index := Mid END_IF;
-    IF (NumArray[Mid] > X) THEN
+    IF (NumArray[Mid] > X) THEN RETURN Binary_Search(NumArray, Left, Mid - 1, X);
+    RETURN Binary_Search(NumArray, Mid + 1, Right, X);
