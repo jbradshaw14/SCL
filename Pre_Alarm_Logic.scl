@@ -1,27 +1,24 @@
-// Define Alarm List for System
-#AlarmList[0] := "Inputs"."FT-200".AlarmWord;
-#AlarmList[1] := "Inputs"."FT-201".AlarmWord;
-#AlarmList[2] := "Inputs"."FT-202".AlarmWord;
-#AlarmList[3] := "Inputs"."FT-205".AlarmWord;
-#AlarmList[4] := "Inputs"."REC-200".AlarmWord;
-#AlarmList[5] := "Inputs"."PT-200".AlarmWord;
-#AlarmList[6] := "Inputs"."PT-201".AlarmWord;
-#AlarmList[7] := "Inputs"."PT-202".AlarmWord;
-#AlarmList[8] := "Inputs"."PD-200".AlarmWord;
-#AlarmList[9] := "Inputs"."LT-200".AlarmWord;
-#AlarmList[10] := "Inputs"."CND-200".AlarmWord;
-#AlarmList[11] := "Inputs"."CND-201".AlarmWord;
-#AlarmList[12] := "Inputs"."PH-200".AlarmWord;
-#AlarmList[13] := "Outputs"."MOV-200 AlarmWord";
-#AlarmList[14] := "Outputs"."MOV-201 AlarmWord";
-#AlarmList[15] := "P-200 Fault";
+// Define Alarm List
+#AlarmList[0] := "Inputs"."FT-100".AlarmWord;
+#AlarmList[1] := "Inputs"."FT-101".AlarmWord;
+#AlarmList[2] := "Inputs"."TT-100".AlarmWord;
+#AlarmList[3] := "Inputs"."ORP-100".AlarmWord;
+#AlarmList[4] := "Inputs"."PD-100".AlarmWord;
+#AlarmList[5] := "Inputs"."PD-101".AlarmWord;
+#AlarmList[6] := "Inputs"."PD-102".AlarmWord;
+#AlarmList[7] := "Inputs"."PD-103".AlarmWord;
+#AlarmList[8] := "Inputs"."PD-104".AlarmWord;
+#AlarmList[9] := "Outputs"."FV-100 AlarmWord";
+#AlarmList[10] := "Outputs"."FV-101 AlarmWord";
+#AlarmList[11] := "Outputs"."FV-102 AlarmWord";
+#AlarmList[12] := "Outputs"."FV-103 AlarmWord";
 
 // Check for alarms
 #Alarm_Checker(AlarmsList := #AlarmList,
-               AlarmWord => "Plant".RO1.AlarmWord,
-               Warning => "Plant".RO1.Warning,
-               Alarm => "Plant".RO1.Alarm,
-               Shutdown => "Plant".RO1.Shutdown);
+               AlarmWord => "Plant".Pre.AlarmWord,
+               Warning => "Plant".Pre.Warning,
+               Alarm => "Plant".Pre.Alarm,
+               Shutdown => "Plant".Pre.Shutdown);
 
 // Flag alarm shutdowns for alarm shutdown history
 "AlarmShutdownFlag"(AlarmsList := #AlarmList,
@@ -81,4 +78,7 @@ ELSE
     #AlarmSdCode := - 1;
     #AlarmSdMsg := '';
 END_IF;
+
+"Plant".AlarmShutdownCode := #AlarmSdCode;
+"Plant".AlarmShutdownMessage := #AlarmSdMsg;
 

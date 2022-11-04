@@ -1,0 +1,38 @@
+// Define Alarm List
+#AlarmList[0] := "Inputs"."LT-000".AlarmWord;
+#AlarmList[1] := "Outputs"."MOV-001 AlarmWord";
+#AlarmList[2] := "Outputs"."P-000 AlarmWord";
+#AlarmList[3] := "Outputs"."MOV-100 AlarmWord";
+
+// Check for alarms
+#Alarm_Checker(#AlarmList,
+               AlarmWord => "Plant".Supply.AlarmWord,
+               Warning => "Plant".Supply.Warning,
+               Alarm => "Plant".Supply.Alarm,
+               Shutdown => "Plant".Supply.Shutdown);
+
+// Flag alarm shutdowns
+"AlarmShutdownFlag"(AlarmsList := = #AlarmList,
+                    AlarmShutdownCode => #AlarmSdCode);
+
+                    // Define shutdown alarm message to HMI
+IF #AlarmSdCode <> 1 THEN
+    IF #AlarmSdCode = 0 THEN
+        #AlarmSdMsg := 'LT-000';
+    END_IF;
+    IF #AlarmSdCode = 1 THEN
+        #AlarmSdMsg := 'MOV-001';
+    END_IF;
+    IF #AlarmSdCode = 2 THEN
+        #AlarmSdMsg := 'P-000';
+    END_IF;
+    IF #AlarmSdCode = 3 THEN
+        #AlarmSdMsg := 'MOV-100';
+    END_IF;
+ELSE
+    #AlarmSdCode := - 1;
+    #AlarmSdMsg := '';
+END_IF;
+
+"Plant".RO2.AlarmShutdownCode := #AlarmSdCode;
+"Plant".RO2.AlarmShutdownMessage := #AlarmSdMsg;

@@ -73,3 +73,10 @@ IF #AlarmSdCode <> 1 THEN
     IF #AlarmSdCode = 14 THEN
         #AlarmSdMsg := 'P-300';
     END_IF;
+ELSE
+    #AlarmSdCode := - 1;
+    #AlarmSdMsg := '';
+END_IF;
+
+"Plant".RO2.AlarmShutdownCode := #AlarmSdCode;
+"Plant".RO2.AlarmShutdownMessage := #AlarmSdMsg;

@@ -34,5 +34,8 @@ IF #AlarmSdCode <> - 1 THEN
     END_IF;
 ELSE
     #AlarmSdCode := - 1;
+    #AlarmSdMsg := '';
 END_IF;
 
+"Plant".DI.AlarmShutdownCode := #AlarmSdCode;
+"Plant".DI.AlarmShutdownMessage := #AlarmSdMsg;
