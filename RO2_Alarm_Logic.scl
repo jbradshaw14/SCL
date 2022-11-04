@@ -1,0 +1,75 @@
+// Define Alarm List for System
+#AlarmList[0] := "Inputs"."FT-300".AlarmWord;
+#AlarmList[1] := "Inputs"."FT-301".AlarmWord;
+#AlarmList[2] := "Inputs"."FT-302".AlarmWord;
+#AlarmList[3] := "Inputs"."FT-305".AlarmWord;
+#AlarmList[4] := "Inputs"."REC-300".AlarmWord;
+#AlarmList[5] := "Inputs"."PT-300".AlarmWord;
+#AlarmList[6] := "Inputs"."PT-301".AlarmWord;
+#AlarmList[7] := "Inputs"."PT-302".AlarmWord;
+#AlarmList[8] := "Inputs"."PD-300".AlarmWord;
+#AlarmList[9] := "Inputs"."LT-500".AlarmWord;
+#AlarmList[10] := "Inputs"."CND-300".AlarmWord;
+#AlarmList[11] := "Inputs"."CND-301".AlarmWord;
+#AlarmList[12] := "Outputs"."MOV-300 AlarmWord";
+#AlarmList[13] := "Outputs"."MOV-301 AlarmWord";
+#AlarmList[14] := "P-300 Fault";
+
+// check for alarms
+#Alarm_Checker(#AlarmList,
+               AlarmWord => "Plant".RO2.AlarmWord,
+               Warning => "Plant".RO2.Warning,
+               Alarm => "Plant".RO2.Alarm,
+               Shutdown => "Plant".RO2.Shutdown);
+
+// Flag alarm shutdowns
+"AlarmShutdownFlag"(AlarmsList := = #AlarmList,
+                    AlarmShutdownCode => #AlarmSdCode);
+
+// Define shutdown alarm message to HMI
+IF #AlarmSdCode <> 1 THEN
+    IF #AlarmSdCode = 0 THEN
+        #AlarmSdMsg := 'FT-300';
+    END_IF;
+    IF #AlarmSdCode = 1 THEN
+        #AlarmSdMsg := 'FT-301';
+    END_IF;
+    IF #AlarmSdCode = 2 THEN
+        #AlarmSdMsg := 'FT-302';
+    END_IF;
+    IF #AlarmSdCode = 3 THEN
+        #AlarmSdMsg := 'FT-305';
+    END_IF;
+    IF #AlarmSdCode = 4 THEN
+        #AlarmSdMsg := 'REC-300';
+    END_IF;
+    IF #AlarmSdCode = 5 THEN
+        #AlarmSdMsg := 'PT-300';
+    END_IF;
+    IF #AlarmSdCode = 6 THEN
+        #AlarmSdMsg := 'PT-301';
+    END_IF;
+    IF #AlarmSdCode = 7 THEN
+        #AlarmSdMsg := 'PT-302';
+    END_IF;
+    IF #AlarmSdCode = 8 THEN
+        #AlarmSdMsg := 'PD-300';
+    END_IF;
+    IF #AlarmSdCode = 9 THEN
+        #AlarmSdMsg := 'LT-500';
+    END_IF;
+    IF #AlarmSdCode = 10 THEN
+        #AlarmSdMsg := 'CND-300';
+    END_IF;
+    IF #AlarmSdCode = 11 THEN
+        #AlarmSdMsg := 'CND-301';
+    END_IF;
+    IF #AlarmSdCode = 12 THEN
+        #AlarmSdMsg := 'MOV-300';
+    END_IF;
+    IF #AlarmSdCode = 13 THEN
+        #AlarmSdMsg := 'MOV-301';
+    END_IF;
+    IF #AlarmSdCode = 14 THEN
+        #AlarmSdMsg := 'P-300';
+    END_IF;
