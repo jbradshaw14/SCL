@@ -1,0 +1,83 @@
+// Define Alarm List for System
+#AlarmList[0] := "Inputs"."FT-200".AlarmWord;
+#AlarmList[1] := "Inputs"."FT-201".AlarmWord;
+#AlarmList[2] := "Inputs"."FT-202".AlarmWord;
+#AlarmList[3] := "Inputs"."FT-205".AlarmWord;
+#AlarmList[4] := "Inputs"."REC-200".AlarmWord;
+#AlarmList[5] := "Inputs"."PT-200".AlarmWord;
+#AlarmList[6] := "Inputs"."PT-201".AlarmWord;
+#AlarmList[7] := "Inputs"."PT-202".AlarmWord;
+#AlarmList[8] := "Inputs"."PD-200".AlarmWord;
+#AlarmList[9] := "Inputs"."LT-200".AlarmWord;
+#AlarmList[10] := "Inputs"."CND-200".AlarmWord;
+#AlarmList[11] := "Inputs"."CND-201".AlarmWord;
+#AlarmList[12] := "Inputs"."PH-200".AlarmWord;
+#AlarmList[13] := "Outputs"."MOV-200 AlarmWord";
+#AlarmList[14] := "Outputs"."MOV-201 AlarmWord";
+#AlarmList[15] := "P-200 Fault";
+
+// Check for alarms
+#Alarm_Checker(AlarmsList := #AlarmList,
+               AlarmWord => "Plant".RO1.AlarmWord,
+               Warning => "Plant".RO1.Warning,
+               Alarm => "Plant".RO1.Alarm,
+               Shutdown => "Plant".RO1.Shutdown);
+
+// Flag alarm shutdowns for alarm shutdown history
+"AlarmShutdownFlag"(AlarmsList := #AlarmList,
+                    AlarmShutdownCode => #AlarmSdCode);
+
+// Define shutdown alarm message to HMI
+IF #AlarmSdCode <> - 1 THEN
+    IF #AlarmSdCode = 0 THEN
+        #AlarmSdMsg := 'FT-200';
+    END_IF;
+    IF #AlarmSdCode = 1 THEN
+        #AlarmSdMsg := 'FT-201';
+    END_IF;
+    IF #AlarmSdCode = 2 THEN
+        #AlarmSdMsg := 'FT-202';
+    END_IF;
+    IF #AlarmSdCode = 3 THEN
+        #AlarmSdMsg := 'FT-205';
+    END_IF;
+    IF #AlarmSdCode = 4 THEN
+        #AlarmSdMsg := 'REC-200';
+    END_IF;
+    IF #AlarmSdCode = 5 THEN
+        #AlarmSdMsg := 'PT-200';
+    END_IF;
+    IF #AlarmSdCode = 6 THEN
+        #AlarmSdMsg := 'PT-201';
+    END_IF;
+    IF #AlarmSdCode = 7 THEN
+        #AlarmSdMsg := 'PT-202';
+    END_IF;
+    IF #AlarmSdCode = 8 THEN
+        #AlarmSdMsg := 'PD-200';
+    END_IF;
+    IF #AlarmSdCode = 9 THEN
+        #AlarmSdMsg := 'LT-200';
+    END_IF;
+    IF #AlarmSdCode = 10 THEN
+        #AlarmSdMsg := 'CND-200';
+    END_IF;
+    IF #AlarmSdCode = 11 THEN
+        #AlarmSdMsg := 'CND-201';
+    END_IF;
+    IF #AlarmSdCode = 12 THEN
+        #AlarmSdMsg := 'PH-200';
+    END_IF;
+    IF #AlarmSdCode = 13 THEN
+        #AlarmSdMsg := 'MOV-200';
+    END_IF;
+    IF #AlarmSdCode = 14 THEN
+        #AlarmSdMsg := 'MOV-201';
+    END_IF;
+    IF #AlarmSdCode = 15 THEN
+        #AlarmSdMsg := 'P-200 Fault';
+    END_IF;
+ELSE
+    #AlarmSdCode := - 1;
+END_IF;
+
