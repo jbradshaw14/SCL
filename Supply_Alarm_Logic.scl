@@ -15,7 +15,7 @@
 "AlarmShutdownFlag"(AlarmsList := = #AlarmList,
                     AlarmShutdownCode => #AlarmSdCode);
 
-                    // Define shutdown alarm message to HMI
+// Define shutdown alarm message to HMI
 IF #AlarmSdCode <> 1 THEN
     IF #AlarmSdCode = 0 THEN
         #AlarmSdMsg := 'LT-000';
