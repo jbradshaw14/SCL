@@ -1,0 +1,38 @@
+// Define Alarm List
+#AlarmList[0] := "Inputs"."LT-501".AlarmWord;
+#AlarmList[1] := "Inputs"."FT-500".AlarmWord;
+#AlarmList[2] := "Inputs"."CND-500".AlarmWord;
+#AlarmList[3] := "Outputs"."P-500 AlarmWord";
+#AlarmList[4] := "Outputs"."MOV-500 AlarmWord";
+
+// Check for Alarms
+#Alarm_Checker(AlarmsList := #AlarmList,
+               AlarmWord => "Plant".DI.AlarmWord,
+               Warning => "Plant".DI.Warning,
+               Alarm => "Plant".DI.Alarm,
+               Shutdown => "Plant".DI.Shutdown);
+
+// Flag alarm shutdowns for alarm shutdown history
+"AlarmShutdownFlag"(AlarmsList := #AlarmList,
+                    AlarmShutdownCode => #AlarmSdCode);
+
+IF #AlarmSdCode <> - 1 THEN
+    IF #AlarmSdCode = 0 THEN
+        #AlarmSdMsg := 'LT-501';
+    END_IF;
+    IF #AlarmSdCode = 1 THEN
+        #AlarmSdMsg := 'FT-500';
+    END_IF;
+    IF #AlarmSdCode = 2 THEN
+        #AlarmSdMsg := 'CND-500';
+    END_IF;
+    IF #AlarmSdCode = 3 THEN
+        #AlarmSdMsg := 'P-500';
+    END_IF;
+    IF #AlarmSdCode = 4 THEN
+        #AlarmSdMsg := 'MOV-500';
+    END_IF;
+ELSE
+    #AlarmSdCode := - 1;
+END_IF;
+
