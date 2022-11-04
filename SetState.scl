@@ -1,3 +1,24 @@
+FUNCTION "Set_State" : Void
+
+VAR_INPUT
+    OFF : BOOL;
+    READY : BOOL;
+    START : BOOL;
+    RUN : BOOL;
+    SLOW : BOOL;
+    STANDBY : BOOL;
+    STOP : BOOL;
+    WARNING : BOOL;
+    ALARM : BOOL;
+    SHUTDOWN : BOOL;
+    MANUAL : BOOL;
+END_VAR
+
+VAR_OUTPUT
+    STATUS_WORD : WORD;
+    STATUS_MESSAGE : STRING;
+END_VAR
+
 //0:off 1:ready 2:start 3:run 4:slow 5:standby 6:stop 7:alarm -1:error
 if not #WARNING and not #ALARM and not #SHUTDOWN
 then
