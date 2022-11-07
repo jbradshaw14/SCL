@@ -9,7 +9,7 @@ end_var
 var_output
   Scaled : Real;
   AlarmWord : Word; //bit 0:hw 1:ha 2:hasd 3:lw 4:la 5:lasd 
-  IOLink_Error : Word; // No Data, Open Line, Undercurrent
+  Error : Word; // 1: No Data, 2: Open Line, 3: Undercurrent
 end_var
 
 var
@@ -24,6 +24,7 @@ var_temp
 end_var
 
 var constant
+  GPM_TO_LPM := 3.785 // gallons to liters per minute
   ANALOG : Real := 1.0;         // type = 0 
   HIGH_PRESSURE : Real := 0.14504;   // type = 1
   LOW_PRESSURE : Real := 0.014504;  // type = 2
@@ -33,6 +34,8 @@ var constant
   IOLink_NO_DATA : Int := 32764;
   IOLink_OPEN_LINE : Int := 32760;
   IOLink_UL : Int := -32760;
+  UNDER_CURRENT : Int := 3200;
+  NO_SIGNAL : Int := 0;
 end_var
 
 region IOLink_Type
@@ -70,18 +73,21 @@ region Scale_and_Calibrate_Input
     else
         #procVal := SCALE_X(MIN := #Config.Min,
                         VALUE := #int2Real,
-                        MAX := #Config.Max);
+                        MAX := #Config.Max);  
+        if #Input_Tag < UNDER_CURRENT and #Input_Tag > NO_SIGNAL then
+            #IOLink_Error := 4;
+            elsif #Input_Tag <= NO_SIGNAL then
+                IOLink_Error := 2;
+            else
+                #IOLink_Error := 0;
+        end_if;
     end_if;
     #Scaled := #procVal;
 end_region
 
 region Alarm_Logic
-        #Alarm_Logic(AlarmON:= #AlarmON,
-                     ProcVal:=#procVal,
-                     Config:=#Config,
-                     AlarmWord=>#AlarmWord);
+    #Alarm_Logic(AlarmON:= #AlarmON,
+                 ProcVal:=#procVal,
+                 Config:=#Config,
+                 AlarmWord=>#AlarmWord);
 end_region
-
-
-
-
