@@ -24,7 +24,6 @@ var_temp
 end_var
 
 var constant
-  GPM_TO_LPM := 3.785 // gallons to liters per minute
   ANALOG : Real := 1.0;         // type = 0 
   HIGH_PRESSURE : Real := 0.14504;   // type = 1
   LOW_PRESSURE : Real := 0.014504;  // type = 2
