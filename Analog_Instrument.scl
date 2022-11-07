@@ -1,0 +1,87 @@
+function_block "Analog_Instrument_FB"
+
+var_input
+  Input_Tag : Int;
+  Config : "AnalogInput_cfg";
+  AlarmON : Bool;
+end_var
+
+var_output
+  Scaled : Real;
+  AlarmWord : Word; //bit 0:hw 1:ha 2:hasd 3:lw 4:la 5:lasd 
+  IOLink_Error : Word; // No Data, Open Line, Undercurrent
+end_var
+
+var
+  Alarm_Logic : "Alarm_Logic_FB";
+end_var
+
+var_temp
+  procVal : Real;
+  int2Real : Real;
+  gradient : Real;
+  alarms : Array [0..15] of Bool;
+end_var
+
+var constant
+  ANALOG : Real := 1.0;         // type = 0 
+  HIGH_PRESSURE : Real := 0.14504;   // type = 1
+  LOW_PRESSURE : Real := 0.014504;  // type = 2
+  HIGH_FLOW : Real := 0.1;       // type = 3
+  LOW_FLOW : Real := 0.01;      // type = 4
+  DEG_F : Real := 0.025;     // type = 5
+  IOLink_NO_DATA : Int := 32764;
+  IOLink_OPEN_LINE : Int := 32760;
+  IOLink_UL : Int := -32760;
+end_var
+
+region IOLink_Type
+    case #Config.Type of
+        0:
+            #gradient := #ANALOG;
+        1:
+            #gradient := #HIGH_PRESSURE;
+        2:
+            #gradient := #LOW_PRESSURE;
+        3:
+            #gradient := #HIGH_FLOW;
+        4:
+            #gradient := #LOW_FLOW;
+        5:
+            #gradient := #DEG_F;
+        else:
+            #gradient := 1.0;
+    end_case;
+end_region
+
+region Scale_and_Calibrate_Input
+    #int2Real := INT_TO_REAL(#Input_Tag);
+    if #gradient <> #ANALOG then
+        #procVal := #Config.Coefficient * (#int2Real * #gradient) + #Config.Offset;
+        if #Input_Tag = #IOLink_NO_DATA then
+            #IOLink_Error := 1;
+        elsif #Input_Tag = #IOLink_OPEN_LINE then
+            #IOLink_Error := 2;
+        elsif #Input_Tag = #IOLink_UL then
+            #IOLink_Error := 4;
+        else
+            #IOLink_Error := 0;
+        end_if;
+    else
+        #procVal := SCALE_X(MIN := #Config.Min,
+                        VALUE := #int2Real,
+                        MAX := #Config.Max);
+    end_if;
+    #Scaled := #procVal;
+end_region
+
+region Alarm_Logic
+        #Alarm_Logic(AlarmON:= #AlarmON,
+                     ProcVal:=#procVal,
+                     Config:=#Config,
+                     AlarmWord=>#AlarmWord);
+end_region
+
+
+
+

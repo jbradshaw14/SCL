@@ -8,7 +8,7 @@ VAR_INPUT
     Config  : "AnalogInput_cfg";
 END_VAR
 
-VAR_OUTPUT.
+VAR_OUTPUT
     AlarmWordOut : WORD; // bit 0:hw 1:ha 2:hasd 3:lw 4:la 5:lasd
 END_VAR
 
@@ -21,10 +21,6 @@ END_VAR
 
 VAR_TEMP
     Alarms : ARRAY [0..15] OF BOOL;
-END_VAR
-
-VAR CONSTANT
-
 END_VAR
 
 // High Warning Logic

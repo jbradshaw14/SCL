@@ -1,0 +1,11 @@
+Used for any analog data
+6 alarms (configurable for high or low activation)
+    Can also be used for process events
+Device failure and warning alarms
+Accumulation of daily totals
+2 additional outputs for unit conversion
+Features:
+    Value Clamping 
+    Calibration Hold
+    Device fail hold settings
+
