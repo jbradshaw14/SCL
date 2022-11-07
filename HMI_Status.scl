@@ -1,0 +1,66 @@
+var_input
+    OFF : Bool;
+    READY : Bool;
+    START : Bool;
+    RUN : Bool;
+    SLOW : Bool;
+    STANDBY : Bool;
+    STOP : Bool;
+    WARNING : Bool;
+    ALARM : Bool;
+    SHUTDOWN : Bool;
+    MANUAL : Bool;
+end_var
+
+var_output
+    STATUS_WORD : Word;
+    STATUS_MESSAGE : String;
+end_var
+
+//0:off 1:ready 2:start 3:run 4:slow 5:standby 6:stop 7:alarm -1:error
+if not #WARNING and not #ALARM and not #SHUTDOWN and not #MANUAL
+then
+    if #OFF then
+        #STATUS_WORD := 0;
+        #STATUS_MESSAGE := 'OFF';
+    end_if;
+    if #READY then
+        #STATUS_WORD := 1;
+        #STATUS_MESSAGE := 'READY';
+    end_if;
+    if #START then
+        #STATUS_WORD := 2;
+        #STATUS_MESSAGE := 'START'; //RO -> FLUSH, Supply -> FILLING
+    end_if;
+    if #RUN then
+        #STATUS_WORD := 3;
+        #STATUS_MESSAGE := 'RUN';
+    end_if;
+    if #SLOW then
+        #STATUS_WORD := 4;
+        #STATUS_MESSAGE := 'SLOW';
+    end_if;
+    if #STANDBY then
+        #STATUS_WORD := 5;
+        #STATUS_MESSAGE := 'STANDBY';
+    end_if;
+    if #STOP then
+        #STATUS_WORD := 6;
+        #STATUS_MESSAGE := 'STOP'; //RO -> FLUSH
+    end_if;
+end_if;
+if #WARNING and not #ALARM and not #SHUTDOWN then
+    #STATUS_WORD := 7;
+    #STATUS_MESSAGE := 'WARNING';
+end_if;
+if #ALARM and not #SHUTDOWN then
+    #STATUS_WORD := 8;
+    #STATUS_MESSAGE := 'ALARM';
+end_if;
+if #SHUTDOWN then
+    #STATUS_WORD := 9;
+    #STATUS_MESSAGE := 'SHUTDOWN';
+end_if;
+if #MANUAL then
+    #STATUS_WORD := 10;
+    #STATUS_MESSAGE := 'MANUAL';
