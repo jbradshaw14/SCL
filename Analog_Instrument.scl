@@ -20,7 +20,6 @@ var_temp
   procVal : Real;
   int2Real : Real;
   gradient : Real;
-  alarms : Array [0..15] of Bool;
 end_var
 
 var constant
@@ -61,13 +60,13 @@ region Scale_and_Calibrate_Input
     if #gradient <> #ANALOG then
         #procVal := #Config.Coefficient * (#int2Real * #gradient) + #Config.Offset;
         if #Input_Tag = #IOLink_NO_DATA then
-            #IOLink_Error := 1;
+            #Error := 1;
         elsif #Input_Tag = #IOLink_OPEN_LINE then
-            #IOLink_Error := 2;
+            #Error := 2;
         elsif #Input_Tag = #IOLink_UL then
-            #IOLink_Error := 4;
+            #Error := 4;
         else
-            #IOLink_Error := 0;
+            #Error := 0;
         end_if;
     else
         #procVal := SCALE_X(MIN := #Config.Min,
@@ -76,9 +75,9 @@ region Scale_and_Calibrate_Input
         if #Input_Tag < UNDER_CURRENT and #Input_Tag > NO_SIGNAL then
             #IOLink_Error := 4;
             elsif #Input_Tag <= NO_SIGNAL then
-                IOLink_Error := 2;
+                #Error := 2;
             else
-                #IOLink_Error := 0;
+                #Error := 0;
         end_if;
     end_if;
     #Scaled := #procVal;
