@@ -15,10 +15,7 @@ var_output
 end_var
 
 var_in_out
-  ServiceTimer : TON_TIME;
-  MinutesCounter : IEC_COUNTER;
-  HoursCounter : IEC_COUNTER;
-end_var
+  ServiceTimer : "udt_ServiceTime"
 
 var
   TON : TON_TIME;
@@ -43,13 +40,13 @@ region Pump_Fault_to_Alarm
 end_region
 
 region Pump_Service_Hours
-  inService := (#ManualMode and #On_PI and not #Interlock) or (#ManualMode and #On_UI) and not #MinutesCounter.CU;
-  #ServiceTimer(IN:=#inService,
-                PT:=T#1M);
-  #MinutesCounter(CU:=#ServiceTimer.Q,
-                  R:=#HoursCounter.CU,
-                  PV:=60);
-  #HoursCounter(CU:=#MinutesCounter.QU,
-                R:=#ServiceTimeReset,
-                PV:=1);
+  #inService := (#ManualMode and #On_PI and not #Interlock) or (#ManualMode and #On_UI) and not #ServiceTime.Minutes.CU;
+  #ServiceTime.Timer(IN:=#inService,
+                     PT:=T#1M);
+  #ServiceTime.Minutes(CU:=#ServiceTime.Timer.Q,
+                       R:=#ServiceTime.Hours.CU,
+                       PV:=60);
+  #ServiceTime.Hours(CU:=#ServiceTime.Minutes.QU,
+                     R:=#ServiceTime.Reset,
+                     PV:=0);
 end_region
