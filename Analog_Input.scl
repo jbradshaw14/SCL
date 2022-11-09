@@ -52,7 +52,11 @@ end_region
 region Scale_and_Calibrate_Input
     #int2Real := INT_TO_REAL(#Input_Tag);
     IF #gradient <> #ANALOG THEN
-        #Calibrated_Tag.Scaled := #Config.Coefficient * (#int2Real * #gradient) + #Config.Offset;
+        IF #Config.Coefficient <> 0 THEN
+            #Calibrated_Tag.Scaled := #Config.Coefficient * (#int2Real * #gradient) + #Config.Offset;
+        ELSE
+            #Calibrated_Tag.Scaled := #int2Real * #gradient + #Config.Offset;
+        END_IF;
         IF #Input_Tag = #IOLink_NO_DATA THEN
             #Calibrated_Tag.Error := 1;
         ELSIF #Input_Tag = #IOLink_OPEN_LINE THEN

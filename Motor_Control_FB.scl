@@ -6,21 +6,23 @@ var_input
   Fault_Tag : Bool;
   ManualMode : Bool;
   On_UI : Bool;
-  Service_Hours_Reset : Bool;
+  ServiceTimeReset : Bool;
 end_var
 
 var_output
   Output_Tag : Bool;
   AlarmWord : Word;
-  Service_Hours : Time;
 end_var
 
 var_in_out
-  Pump_Service_Timer : TONR_TIME;
+  ServiceTimer : TON_TIME;
+  MinutesCounter : IEC_COUNTER;
+  HoursCounter : IEC_COUNTER;
 end_var
 
 var
   TON : TON_TIME;
+  inService : Bool;
 end_var
 
 var constant
@@ -41,8 +43,13 @@ region Pump_Fault_to_Alarm
 end_region
 
 region Pump_Service_Hours
-  #Pump_Service_Timer(IN:=#Output_Tag,
-                      R:=#Service_Hours_Reset,
-                      PT:=T#0ms,
-                      ET=>#Service_Hours);
+  inService := (#ManualMode and #On_PI and not #Interlock) or (#ManualMode and #On_UI) and not #MinutesCounter.CU;
+  #ServiceTimer(IN:=inService,
+                PT:=T#1M);
+  #MinutesCounter(CU:=#ServiceTimer.Q,
+                  R:=#HoursCounter.CU,
+                  PV:=60);
+  #HoursCounter(CU:=#MinutesCounter.QU,
+                ServiceTimeReset,
+                PV:=1);
 end_region
