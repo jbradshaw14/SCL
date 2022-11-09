@@ -28,7 +28,7 @@ var constant
 end_var
 
 region Output_to_Coil
-  #Output_Tag  := ("HMI".ManualMode and #On_PI and not #Interlock) or ("HMI".ManualMode and #On_UI);
+  #Output_Tag  := (#ManualMode and #On_PI and not #Interlock) or (#ManualMode and #On_UI);
 end_region
 
 region Pump_Fault_to_Alarm
