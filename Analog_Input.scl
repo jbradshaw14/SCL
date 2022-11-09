@@ -1,0 +1,132 @@
+FUNCTION "Analog_Input" : Void
+
+  VAR_INPUT
+    Input_Tag : INT;
+    Config : "cfg_AnalogInput";
+    AlarmON : BOOL;
+  END_VAR
+
+  VAR_IN_OUT
+    Calibrated_Tag : "udt_CalibratedInput";
+  END_VAR
+
+  VAR_TEMP
+    int2Real : REAL;
+    gradient : REAL;
+    Alarm : ARRAY[0..15] OF BOOL;
+  END_VAR
+
+  VAR CONSTANT
+    ANALOG : REAL := 1.0;         // type = 0
+    HIGH_PRESSURE : REAL := 0.14504;   // type = 1
+    LOW_PRESSURE : REAL := 0.014504;  // type = 2
+    HIGH_FLOW : REAL := 0.1;       // type = 3
+    LOW_FLOW : REAL := 0.01;      // type = 4
+    DEG_F : REAL := 0.025;     // type = 5
+    IOLink_NO_DATA : INT := 32764;
+    IOLink_OPEN_LINE : INT := 32760;
+    IOLink_UL : INT := - 32760;
+    UNDER_CURRENT : INT := 3200;
+    NO_SIGNAL : INT := 0;
+  END_VAR
+
+region IOLink_Type
+    CASE #Config.TYPE OF
+        0 :
+            #gradient := #ANALOG;
+        1 :
+            #gradient := #HIGH_PRESSURE;
+        2 :
+            #gradient := #LOW_PRESSURE;
+        3 :
+            #gradient := #HIGH_FLOW;
+        4 :
+            #gradient := #LOW_FLOW;
+        5 :
+            #gradient := #DEG_F;
+        ELSE :
+            #gradient := 1.0;
+    END_CASE;
+end_region
+
+region Scale_and_Calibrate_Input
+    #int2Real := INT_TO_REAL(#Input_Tag);
+    IF #gradient <> #ANALOG THEN
+        #Calibrated_Tag.Scaled := #Config.Coefficient * (#int2Real * #gradient) + #Config.Offset;
+        IF #Input_Tag = #IOLink_NO_DATA THEN
+            #Calibrated_Tag.Error := 1;
+        ELSIF #Input_Tag = #IOLink_OPEN_LINE THEN
+            #Calibrated_Tag.Error := 2;
+        ELSIF #Input_Tag = #IOLink_UL THEN
+            #Calibrated_Tag.Error := 4;
+        ELSE
+            #Calibrated_Tag.Error := 0;
+        END_IF;
+    ELSE
+        #Calibrated_Tag.Scaled := SCALE_X(MIN := #Config.Min,
+                                          VALUE := #int2Real,
+                                          MAX := #Config.Max);
+        IF #Input_Tag < #UNDER_CURRENT AND #Input_Tag > #NO_SIGNAL THEN
+            #Calibrated_Tag.Error := 4;
+        ELSIF #Input_Tag <= #NO_SIGNAL THEN
+            #Calibrated_Tag.Error := 2;
+        ELSE
+            #Calibrated_Tag.Error := 0;
+        END_IF;
+    END_IF;
+end_region
+
+region Alarm_Logic
+    // High Warning Logic
+    IF #Calibrated_Tag.Scaled > #Config.HighAlarmSP AND #AlarmON AND #Config.HighAlarmPT <> T#0ms
+    THEN
+        #Alarm[0] := TRUE;
+    ELSE
+        #Alarm[0] := FALSE;
+    END_IF;
+
+    // High Alarm Timer Logic
+    #Calibrated_Tag.TALH(IN := #Alarm[0],
+                           PT := #Config.HighAlarmPT);
+    #Alarm[1] := #Calibrated_Tag.TALH.Q;
+
+    // High Alarm Shutdown
+    IF (#Config.HighAlarmSdPT <> T#0ms)
+    THEN
+        #Calibrated_Tag.TSDH(IN := #Alarm[1],
+                               PT := #Config.HighAlarmSdPT);
+        #Alarm[2] := #Calibrated_Tag.TSDH.Q;
+    ELSE
+        #Alarm[2] := FALSE;
+    END_IF;
+
+    // Low Warning Logic
+    IF #Calibrated_Tag.Scaled < #Config.LowAlarmSP AND #AlarmON AND #Config.LowAlarmPT <> T#0ms
+    THEN
+        #Alarm[3] := TRUE;
+    ELSE
+        #Alarm[3] := FALSE;
+    END_IF;
+
+    // Low Alarm Timer
+    #Calibrated_Tag.TALL(IN := #Alarm[3],
+                           PT := #Config.LowAlarmPT);
+    #Alarm[4] := #Calibrated_Tag.TALL.Q;
+
+    // Low Alarm Shutdown
+    IF (#Config.LowAlarmSdPT <> T#0ms)
+    THEN
+        #Calibrated_Tag.TSDL(IN := #Alarm[4],
+                               PT := #Config.LowAlarmSdPT);
+        #Alarm[5] := #Calibrated_Tag.TSDL.Q;
+    ELSE
+        #Alarm[5] := FALSE;
+    END_IF;
+
+    GATHER(IN := #Alarm,
+           OUT => #Calibrated_Tag.AlarmWord);
+end_region
+
+
+
+

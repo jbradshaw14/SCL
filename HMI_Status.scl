@@ -64,3 +64,4 @@ end_if;
 if #MANUAL then
     #STATUS_WORD := 10;
     #STATUS_MESSAGE := 'MANUAL';
+end_if;
