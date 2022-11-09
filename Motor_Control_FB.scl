@@ -4,26 +4,45 @@ var_input
   On_PI : Bool;
   Interlock : Bool;
   Fault_Tag : Bool;
+  ManualMode : Bool;
+  On_UI : Bool;
+  Service_Hours_Reset : Bool;
 end_var
 
 var_output
   Output_Tag : Bool;
-  #Alarm : Bool;
+  AlarmWord : Word;
+  Service_Hours : Time;
 end_var
 
 var_in_out
-
+  Pump_Service_Timer : TONR_TIME;
 end_var
 
 var
-  On_UI : Bool;
-  TON : IEC_TIMER;
+  TON : TON_TIME;
 end_var
 
+var constant
+  ALARM_CODE : Word := 16;
+end_var
 
-#Output_Tag := ("HMI".ManualMode and #On_PI and not #Interlock) or ("HMI".ManualMode and #On_UI);
+region Output_to_Coil
+  #Output_Tag  := ("HMI".ManualMode and #On_PI and not #Interlock) or ("HMI".ManualMode and #On_UI);
+end_region
 
-// Pump Fault
-if #Fault_Tag then
-  TON()
-#Alarm := (#Fault_Tag or #Alarm) and not "HMI".AlarmAck;
+region Pump_Fault_to_Alarm
+// Pump Fault to Alarm
+  #TON(IN:=#Fault_Tag,
+       PT:=T#3s);
+  if #TON.Q then
+      #AlarmWord := #ALARM_CODE;
+  end_if;
+end_region
+
+region Pump_Service_Hours
+  #Pump_Service_Timer(IN:=#Output_Tag,
+                      R:=#Service_Hours_Reset,
+                      PT:=T#0ms,
+                      ET=>#Service_Hours);
+end_region
