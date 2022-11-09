@@ -6,7 +6,6 @@ var_input
   Fault_Tag : Bool;
   ManualMode : Bool;
   On_UI : Bool;
-  ServiceTimeReset : Bool;
 end_var
 
 var_output
