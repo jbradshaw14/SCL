@@ -1,0 +1,33 @@
+FUNCTION_BLOCK "IOLInkMaster"
+
+VAR_INPUT
+  AI_X01 : "cfg_AnalogInput";
+  AI_X02 : "cfg_Analoginput";
+  AI_X03 : "cfg_Analoginput";
+  AI_X04 : "cfg_Analoginput";
+  AI_X05 : "cfg_Analoginput";
+  AI_X06 : "cfg_Analoginput";
+  AI_X07 : "cfg_Analoginput";
+  AI_X08 : "cfg_Analoginput";
+  AO_X01 : ""
+END_VAR
+
+VAR_OUTPUT
+
+END_VAR
+
+VAR_IN_OUT
+
+END_VAR
+
+VAR
+
+END_VAR
+
+VAR_TEMP
+
+END_VAR
+
+VAR CONSTANT
+
+END_VAR

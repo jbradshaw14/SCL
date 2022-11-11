@@ -4,7 +4,7 @@ var_input
 	AlarmsList : Array [0..20] of Word;
 end_var
 
-var_output
+var_OUTPUT
 	AlarmWord : Word;
 	Warning : Bool;
 	Alarm : Bool;

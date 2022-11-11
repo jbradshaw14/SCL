@@ -1,0 +1,64 @@
+FUNCTION_BLOCK "AnalogOutput"
+
+VAR_INPUT
+  Control_Type : INT; // 0: PID or Constant Setpoint 1:P Only
+  Interlock : BOOL;
+  CONTROL_ON : BOOL;
+  ManualMode : BOOL;
+  P_Coefficent : REAL;
+  Process_Variable : REAL;
+  Level_Switch_Tag : BOOL;
+  Input_PI : INT;
+  Input_UI : INT;
+END_VAR
+
+VAR_OUTPUT
+  Output_Tag : INT;
+END_VAR
+
+VAR CONSTANT
+    SPAN : REAL := 16000.0;
+    LRV : REAL := 4000.0;
+END_VAR
+
+REGION PID_OR_SETPOINT
+IF #Control_Type = 0 THEN
+    IF NOT #INTERLOCK THEN
+        IF #ManualMode THEN
+            "Real%toInt_mA"(Input := #Input_UI,
+                            Output => #Output_Tag);
+        ELSE
+            IF #CONTROL_ON THEN
+            "Real%toInt_mA"(Input := #Input_PI,
+                            Output => #Output_Tag);
+            ELSE
+            "Real%toInt_mA"(Input := 0.0,
+                            Output => #Output_Tag);
+            END_IF;
+        END_IF;
+    ELSE
+        "Real%toInt_mA"(Input := 0.0,
+                        Output => #Output_Tag);
+    END_IF;
+END_IF;
+END_REGION
+
+REGION P_ONLY
+IF #Control_Type = 1 THEN
+    IF NOT #INTERLOCK THEN
+        IF #ManualMode THEN
+            "%_to_mA"(Val_IN := Input_UI, Output => #Output_Tag);
+        ELSE
+            IF #CONTROL_ON  AND #Level_Switch_Tag THEN
+                #Output_Tag := REAL_TO_INT(((#SPAN / #P_Coefficent) * #Process_Variable) + #LRV);
+            ELSE
+                "Real%toInt_mA"(Input := 0.0,
+                                Output => #Output_Tag);
+            END_IF;
+        END_IF;
+    ELSE
+    "Real%toInt_mA"(Input := 0.0,
+                    Output => #Output_Tag);
+    END_IF;
+END_IF;
+END_REGION

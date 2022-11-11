@@ -1,0 +1,77 @@
+FUNCTION_BLOCK "Discrete_Output"
+
+VAR_INPUT
+  ON : BOOL;
+  ManualMode : BOOL;
+  ALARM_ON : BOOL;
+  OUTPUT_TYPE : INT; // 0: Valve 1: Pump
+  INTERLOCK : BOOL;
+  FEEDBACK_ON_TAG : BOOL;
+  FEEDBACK_OFF_TAG : BOOL;
+  FAULT_TAG : BOOL;
+  ON_UI : BOOL;
+END_VAR
+
+VAR_OUTPUT
+  OUTPUT_TAG : BOOL;
+  Alarm_Word : WORD;
+  SERVICE_HOURS : UDINT;
+END_VAR
+
+VAR
+  TON : TON_TIME;
+  TOFF : TOF_TIME;
+SERVICE_TIME : "udt_ServiceTime";
+END_VAR
+
+VAR_TEMP
+  Valve_Ok : BOOL;
+END_VAR
+
+VAR CONSTANT
+  ALARM_CODE : WORD := 8; // SHUTDOWN CODE
+END_VAR
+
+region CONTROL_VALVE
+    IF #OUTPUT_TYPE = 0 THEN
+        // CONTROL FROM HMI OR CONTROLLER
+        #TOFF(IN := #ON AND NOT #ManualMode AND NOT #INTERLOCK,
+              PT := T#6s);
+        #OUTPUT_TAG := #TOFF.Q OR (#ManualMode AND #ON_UI);
+        // VALVE OK
+        #Valve_Ok := ((#ON OR #ON_UI) AND #FEEDBACK_ON_TAG) OR (NOT #ON AND NOT #ON_UI AND #FEEDBACK_OFF_TAG);
+        // RETURN ALARM
+        #TON(IN := #ALARM_ON AND NOT #Valve_Ok,
+             PT := T#10s);
+        IF #TON.Q THEN
+            #Alarm_Word := #ALARM_CODE;
+        END_IF;
+        IF #ALARM_ON OR #Valve_Ok THEN
+            #Alarm_Word := 0;
+        END_IF;
+    END_IF;
+end_region
+
+region PUMP
+    IF #OUTPUT_TYPE = 1 THEN
+        #OUTPUT_TAG := (#ON AND NOT #ManualMode AND NOT #INTERLOCK) OR (#ManualMode AND #ON_UI);
+        // RETURN FAULT
+        #TON(IN := #FAULT_TAG,
+             PT := T#3s);
+        IF #TON.Q THEN
+            #Alarm_Word := #ALARM_CODE;
+        END_IF;
+    END_IF;
+end_region
+
+region SERVICE_TIMER
+    #SERVICE_TIME.Timer (IN := #OUTPUT_TAG,
+    PT := T#1m);
+    #SERVICE_TIME.Minutes (CU := #SERVICE_TIME.Timer.Q,
+    R := #SERVICE_TIME.Hours.CU,
+    PV := 60);
+    #SERVICE_TIME.Hours (CU := #SERVICE_TIME.Minutes.QU,
+    R := #SERVICE_TIME.Reset,
+    PV := 0);
+    #SERVICE_HOURS := #SERVICE_TIME.HOURS.CV;
+end_region
