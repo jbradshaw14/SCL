@@ -1,0 +1,24 @@
+FUNCTION "Recycle Flow" : Void
+
+VAR_INPUT
+    FeedFlow_PI : REAL;
+    PermeateFlow_PI : REAL;
+    RejectFlow_PI : REAL;
+    Config : "cfg_Analoginput";
+    AlarmON : BOOL;
+END_VAR
+
+VAR_IN_OUT
+    Calibrated_Tag : "udt_CalibratedInput";
+END_VAR
+
+#Calibrated_Tag.Scaled := #FeedFlow_PI - #PermeateFlow_PI - #RejectFlow_PI;
+
+"AlarmLogic"(alarmON := #AlarmON,
+            procVal := #Calibrated_Tag.Scaled,
+            Config := #Config,
+            ALTONH := #Calibrated_Tag.TALH,
+            ALTONL := #Calibrated_Tag.TALL,
+            SDTONH := #Calibrated_Tag.TSDH,
+            SDTONL := #Calibrated_Tag.TSDL,
+            AlarmWord => #Calibrated_Tag.AlarmWord);

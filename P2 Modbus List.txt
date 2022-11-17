@@ -1,0 +1,16 @@
+RTU:		Slave ID:
+S7          1
+IDEC-100	2
+IDEC-200	3
+IDEC-300	4
+IDEC-400	5
+VFD-200 	6
+VFD-300	    7
+VFD-400	    8
+Click PLC   9
+
+TCP/IP
+EDI-400 : 
+EDI-401
+
+6av0 123 2gb03 0ax0
