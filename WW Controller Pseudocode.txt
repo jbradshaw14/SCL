@@ -1,0 +1,19 @@
+Waste Water RO Pretreatment Control:
+
+if LT-100 > Low Warning Setpoint then
+    Mixer = ON (100% ?), Interlock on LT-100 Low Level;
+    MP-100 Control Active,
+           PID Control via ORP-100 (High Derivative for Analytical Process),
+           Interlock = NOT LSL-100;
+    MP-101 control active, 
+           PID Control via PH-100 (High Derivative for Analytical Process),
+           Interlock = NOT LSL-101;
+end_if;
+
+if LT-101 < Low Warning Setpoint then
+    Process in STANDBY mode;
+end_if;
+
+Alarms: 
+    LT-100 Low & High Alarm
+    LT-101 Low & High Alarm
