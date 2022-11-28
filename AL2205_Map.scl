@@ -58,7 +58,7 @@ GATHER(IN := #DX_P4,
 "LSL-100"           := #DI_P2[#"X1.0 PIN 2"];
 "MBFV-100 Open"     := #DI_P2[#"X1.2 PIN 2"];
 "MBFV-100 Closed"   := #DI_P2[#"X1.2 PIN 4"];
-"MBFV-100 Output"   := #DI_P2[#"X1.3 PIN 4"];
+"MBFV-100 Output"   := #DX_P2[#"X1.3 PIN 4"];
 
 // MOD 02-01
 "LSL-200"           := #DI_P4[#"X1.0 PIN 4"];
