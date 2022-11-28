@@ -1,7 +1,7 @@
 Waste Water RO Pretreatment Control :
 
 SEQUENCE:
-    Control Active = LT-100 > Low Warning Setpoint;
+    ton Control Active = LT-100 > Low Warning Setpoint;
 
 if LT-100 > Low Warning Setpoint then
     Mixer = ON (100% ?), Interlock on LT-100 Low Level;
@@ -14,7 +14,7 @@ if LT-100 > Low Warning Setpoint then
 end_if;
 
 if LT-101 < Low Warning Setpoint then
-    Process in STANDBY mode;
+    ton Process in STANDBY mode;
 end_if;
 
 Alarms:

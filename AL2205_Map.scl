@@ -1,0 +1,98 @@
+VAR_INPUT
+    iDI_P2 : INT;
+    iDI_P4 : INT;
+    iDI_P6 : INT;
+END_VAR
+
+VAR_OUTPUT
+    qDX_P2 : INT;
+    qDX_P4 : INT;
+    qDX_P6 : INT;
+END_VAR
+
+VAR
+    DI_P2 :	ARRAY[0..15] OF BOOL;
+    DI_P4 :	ARRAY[0..15] OF BOOL;
+    DI_P6 :	ARRAY[0..15] OF BOOL;
+    DX_P2 :	ARRAY[0..15] OF BOOL;
+    DX_P4 :	ARRAY[0..15] OF BOOL;
+    DX_P6 :	ARRAY[0..15] OF BOOL;
+END_VAR
+
+VAR CONSTANT
+"X1.0 PIN 2" :	INT;
+"X1.1 PIN 2" :	INT;
+"X1.2 PIN 2" :	INT;
+"X1.3 PIN 2" :	INT;
+"X1.4 PIN 2" :	INT;
+"X1.5 PIN 2" :	INT;
+"X1.6 PIN 2" :	INT;
+"X1.7 PIN 2" :	INT;
+"X1.0 PIN 4" :	INT;
+"X1.1 PIN 4" :	INT;
+"X1.2 PIN 4" :	INT;
+"X1.3 PIN 4" :	INT;
+"X1.4 PIN 4" :	INT;
+"X1.5 PIN 4" :	INT;
+"X1.6 PIN 4" :	INT;
+"X1.7 PIN 4" :	INT;
+END_VAR
+
+// SCATTER
+SCATTER(IN := #iDI_P2,
+        OUT => #DI_P2);
+SCATTER(IN := #iDI_P4,
+        OUT => #DI_P4);
+SCATTER(IN := #iDI_P6,
+        OUT => #DI_P6);
+
+// GATHER
+GATHER(IN := #DX_P2,
+       OUT => #qDX_P2);
+GATHER(IN := #DX_P4,
+       OUT => #qDX_P4);
+GATHER(IN := #DX_P4,
+       OUT => #qDX_P4);
+
+// MOD 02-00
+"LSL-100"           := #DI_P2[#"X1.0 PIN 2"];
+"MBFV-100 Open"     := #DI_P2[#"X1.2 PIN 2"];
+"MBFV-100 Closed"   := #DI_P2[#"X1.2 PIN 4"];
+"MBFV-100 Open"     := #DI_P2[#"X1.3 PIN 4"];
+
+// MOD 02-01
+"LSL-200"           := #DI_P4[#"X1.0 PIN 4"];
+"MBFV-200 Open"     := #DI_P4[#"X1.2 PIN 2"];
+"MBFV-200 Closed"   := #DI_P4[#"X1.2 PIN 4"];
+"MBFV-200 Output"   := #DI_P4[#"X1.3 PIN 4"];
+"MOV-200 Open"      := #DI_P4[#"X1.4 PIN 2"];
+"MOV-200 Closed"    := #DI_P4[#"X1.4 PIN 4"];
+"MOV-200 Output"    := #DI_P4[#"X1.5 PIN 4"];
+"MOV-202 Output"    := #DI_P4[#"X1.5 PIN 2"];
+"MOV-202 Open"      := #DI_P4[#"X1.6 PIN 2"];
+"MOV-202 Closed"    := #DI_P4[#"X1.6 PIN 4"];
+
+// MOD 02-02
+"LSL-300"           := #DI_P6[#"X1.0 PIN 4"];
+"MBFV-201 Open"     := #DI_P6[#"X1.2 PIN 2"];
+"MBFV-201 Closed"   := #DI_P6[#"X1.2 PIN 4"];
+"MBFV-201 Output"   := #DI_P6[#"X1.3 PIN 4"];
+"MOV-300 Open"      := #DI_P6[#"X1.4 PIN 2"];
+"MOV-300 Closed"    := #DI_P6[#"X1.4 PIN 4"];
+"MOV-300 Output"    := #DI_P6[#"X1.5 PIN 4"];
+"MOV-302 Open"      := #DI_P6[#"X1.6 PIN 2"];
+"MOV-302 Closed"    := #DI_P6[#"X1.6 PIN 4"];
+"MOV-302 Output"    := #DI_P6[#"X1.5 PIN 2"];
+
+
+
+
+
+
+
+
+
+
+
+
+
