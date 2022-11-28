@@ -64,11 +64,11 @@ GATHER(IN := #DX_P4,
 "LSL-200"           := #DI_P4[#"X1.0 PIN 4"];
 "MBFV-200 Open"     := #DI_P4[#"X1.2 PIN 2"];
 "MBFV-200 Closed"   := #DI_P4[#"X1.2 PIN 4"];
-"MBFV-200 Output"   := #DI_P4[#"X1.3 PIN 4"];
+"MBFV-200 Output"   := #DX_P4[#"X1.3 PIN 4"];
 "MOV-200 Open"      := #DI_P4[#"X1.4 PIN 2"];
 "MOV-200 Closed"    := #DI_P4[#"X1.4 PIN 4"];
-"MOV-200 Output"    := #DI_P4[#"X1.5 PIN 4"];
-"MOV-202 Output"    := #DI_P4[#"X1.5 PIN 2"];
+"MOV-200 Output"    := #DX_P4[#"X1.5 PIN 4"];
+"MOV-202 Output"    := #DX_P4[#"X1.5 PIN 2"];
 "MOV-202 Open"      := #DI_P4[#"X1.6 PIN 2"];
 "MOV-202 Closed"    := #DI_P4[#"X1.6 PIN 4"];
 
@@ -76,13 +76,13 @@ GATHER(IN := #DX_P4,
 "LSL-300"           := #DI_P6[#"X1.0 PIN 4"];
 "MBFV-201 Open"     := #DI_P6[#"X1.2 PIN 2"];
 "MBFV-201 Closed"   := #DI_P6[#"X1.2 PIN 4"];
-"MBFV-201 Output"   := #DI_P6[#"X1.3 PIN 4"];
+"MBFV-201 Output"   := #DX_P6[#"X1.3 PIN 4"];
 "MOV-300 Open"      := #DI_P6[#"X1.4 PIN 2"];
 "MOV-300 Closed"    := #DI_P6[#"X1.4 PIN 4"];
-"MOV-300 Output"    := #DI_P6[#"X1.5 PIN 4"];
+"MOV-300 Output"    := #DX_P6[#"X1.5 PIN 4"];
 "MOV-302 Open"      := #DI_P6[#"X1.6 PIN 2"];
 "MOV-302 Closed"    := #DI_P6[#"X1.6 PIN 4"];
-"MOV-302 Output"    := #DI_P6[#"X1.5 PIN 2"];
+"MOV-302 Output"    := #DX_P6[#"X1.5 PIN 2"];
 
 
 
