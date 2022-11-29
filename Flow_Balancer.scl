@@ -1,0 +1,44 @@
+function "Flow Balancer" : Void
+
+var_input
+  Active : Bool;
+  SetpointIN : Real;
+  FlowOut : Real;
+  FlowIn1 : Real;
+  FlowIn2 : Real;
+end_var
+
+var_in_out
+  AdjustedSetpoint : Real;
+  checkTimer : TON_TIME;
+  flowBalance : Real;
+end_var
+
+var_temp
+  Setpoint : Real;
+end_var
+
+var constant
+  BIG_RANGE : Real := 1.0;
+  BIG_STEP : Real := 0.2;
+  SMALL_RANGE : Real := 0.5;
+  SMALL_STEP : Real := 0.1;
+end_var
+
+#Setpoint := #SetpointIN;
+#flowBalance := #FlowOut - (#FlowIn1 + #FlowIn2);
+if #Active then
+    #checkTimer(IN := not #checkTimer.Q,
+                PT := T#60s);
+    if #checkTimer.Q then
+        if #flowBalance > #BIG_RANGE then
+            #AdjustedSetpoint := #Setpoint - #BIG_STEP;
+        elsif #flowBalance > #SMALL_RANGE then
+            #AdjustedSetpoint := #Setpoint - #SMALL_STEP;
+        elsif #flowBalance < - #SMALL_RANGE then
+            #AdjustedSetpoint := #Setpoint + #SMALL_STEP;
+        elsif #flowBalance < - #BIG_RANGE then
+            #AdjustedSetpoint := #Setpoint + #BIG_STEP;
+        end_if;
+    end_if;
+end_if;
