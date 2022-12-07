@@ -23,42 +23,35 @@ END_VAR
 
 REGION PID_OR_SETPOINT
 IF #Control_Type = 0 THEN
-    IF NOT #INTERLOCK THEN
-        IF #ManualMode THEN
-            "Real%toInt_mA"(Input := #Input_UI,
-                            Output => #Output_Tag);
-        ELSE
-            IF #CONTROL_ON THEN
+    IF #MananualMode THEN
+        "Real%toInt_mA"(Input := #Input_UI,
+                        Output => #Output_Tag);
+    ELSE
+        IF #CONTROL_ON AND NOT #INTERLOCK THEN
             "Real%toInt_mA"(Input := #Input_PI,
                             Output => #Output_Tag);
-            ELSE
+        ELSE
             "Real%toInt_mA"(Input := 0.0,
                             Output => #Output_Tag);
-            END_IF;
         END_IF;
-    ELSE
-        "Real%toInt_mA"(Input := 0.0,
-                        Output => #Output_Tag);
     END_IF;
 END_IF;
 END_REGION
 
 REGION P_ONLY
 IF #Control_Type = 1 THEN
-    IF NOT #INTERLOCK THEN
-        IF #ManualMode THEN
-            "%_to_mA"(Val_IN := Input_UI, Output => #Output_Tag);
-        ELSE
-            IF #CONTROL_ON  AND #Level_Switch_Tag THEN
-                #Output_Tag := REAL_TO_INT(((#SPAN / #P_Coefficent) * #Process_Variable) + #LRV);
-            ELSE
-                "Real%toInt_mA"(Input := 0.0,
-                                Output => #Output_Tag);
-            END_IF;
-        END_IF;
+    IF #MananualMode THEN
+        "Real%_toInt_mA"(Val_IN := Input_UI,
+                         Output => #Output_Tag);
     ELSE
-    "Real%toInt_mA"(Input := 0.0,
-                    Output => #Output_Tag);
+        IF #CONTROL_ON AND #Level_Switch_Tag AND NOT #INTERLOCK THEN
+            #Output_Tag := REAL_TO_INT(((#SPAN / #P_Coefficent) * #Process_Variable) + #LRV);
+        ELSE
+            "Real%toInt_mA"(Input := 0.0,
+                            Output => #Output_Tag);
+        END_IF;
     END_IF;
 END_IF;
 END_REGION
+
+"mA_to_%"(Val_IN := #Output_Tag, Output => #Output_to_HMI);
