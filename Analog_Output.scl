@@ -1,57 +1,63 @@
-FUNCTION_BLOCK "AnalogOutput"
+FUNCTION_BLOCK "Analog_Output"
 
 VAR_INPUT
-  Control_Type : INT; // 0: PID or Constant Setpoint 1:P Only
-  Interlock : BOOL;
-  CONTROL_ON : BOOL;
+  Control_Active : BOOL;
+  Setpoint_In : REAL;
   ManualMode : BOOL;
+  Interlock : BOOL;
+  Control_Type : INT; // 0: PID or Constant Setpoint 1:P Only
   P_Coefficent : REAL;
   Process_Variable : REAL;
   Level_Switch_Tag : BOOL;
-  Input_PI : INT;
-  Input_UI : INT;
+  Input_UI : REAL;
 END_VAR
 
 VAR_OUTPUT
+  Output_to_HMI : REAL; // in %
+END_VAR
+
+VAR_IN_OUT
   Output_Tag : INT;
 END_VAR
 
 VAR CONSTANT
-    SPAN : REAL := 16000.0;
-    LRV : REAL := 4000.0;
+SPAN : REAL := 16000.0;
+LRV : REAL := 4000.0;
 END_VAR
 
-REGION PID_OR_SETPOINT
-IF #Control_Type = 0 THEN
-    IF #MananualMode THEN
-        "Real%toInt_mA"(Input := #Input_UI,
-                        Output => #Output_Tag);
-    ELSE
-        IF #CONTROL_ON AND NOT #INTERLOCK THEN
-            "Real%toInt_mA"(Input := #Input_PI,
+
+region PID_OR_SETPOINT
+    IF #Control_Type = 0 THEN
+        IF #ManualMode THEN
+            "Real%toInt_mA"(Input := #Input_UI,
                             Output => #Output_Tag);
         ELSE
-            "Real%toInt_mA"(Input := 0.0,
-                            Output => #Output_Tag);
+            IF #Control_Active AND NOT #Interlock THEN
+                "Real%toInt_mA"(Input := #Setpoint_In,
+                                Output => #Output_Tag);
+            ELSE
+                "Real%toInt_mA"(Input := 0.0,
+                                Output => #Output_Tag);
+            END_IF;
         END_IF;
     END_IF;
-END_IF;
-END_REGION
+end_region
 
-REGION P_ONLY
-IF #Control_Type = 1 THEN
-    IF #MananualMode THEN
-        "Real%_toInt_mA"(Val_IN := Input_UI,
-                         Output => #Output_Tag);
-    ELSE
-        IF #CONTROL_ON AND #Level_Switch_Tag AND NOT #INTERLOCK THEN
-            #Output_Tag := REAL_TO_INT(((#SPAN / #P_Coefficent) * #Process_Variable) + #LRV);
+region P_ONLY
+    IF #Control_Type = 1 THEN
+        IF #ManualMode THEN
+            "Real%toInt_mA"(Input := #Setpoint_In,
+                             Output => #Output_Tag);
         ELSE
-            "Real%toInt_mA"(Input := 0.0,
-                            Output => #Output_Tag);
+            IF #Control_Active AND #Level_Switch_Tag AND NOT #Interlock THEN
+                #Output_Tag := REAL_TO_INT(((#SPAN / #P_Coefficent) * #Process_Variable) + #LRV);
+            ELSE
+                "Real%toInt_mA"(Input := 0.0,
+                                Output => #Output_Tag);
+            END_IF;
         END_IF;
     END_IF;
-END_IF;
-END_REGION
+end_region
 
-"mA_to_%"(Val_IN := #Output_Tag, Output => #Output_to_HMI);
+"mA_to_%"(Val_IN := #Output_Tag,
+          Output => #Output_to_HMI);
