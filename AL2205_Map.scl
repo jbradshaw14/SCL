@@ -20,22 +20,22 @@ VAR
 END_VAR
 
 VAR CONSTANT
-"X1.0 PIN 2" :	INT;
-"X1.1 PIN 2" :	INT;
-"X1.2 PIN 2" :	INT;
-"X1.3 PIN 2" :	INT;
-"X1.4 PIN 2" :	INT;
-"X1.5 PIN 2" :	INT;
-"X1.6 PIN 2" :	INT;
-"X1.7 PIN 2" :	INT;
-"X1.0 PIN 4" :	INT;
-"X1.1 PIN 4" :	INT;
-"X1.2 PIN 4" :	INT;
-"X1.3 PIN 4" :	INT;
-"X1.4 PIN 4" :	INT;
-"X1.5 PIN 4" :	INT;
-"X1.6 PIN 4" :	INT;
-"X1.7 PIN 4" :	INT;
+"X1.0 PIN 2" :	INT := 0;
+"X1.1 PIN 2" :	INT := 1;
+"X1.2 PIN 2" :	INT := 2;
+"X1.3 PIN 2" :	INT := 3;
+"X1.4 PIN 2" :	INT := 4;
+"X1.5 PIN 2" :	INT := 5;
+"X1.6 PIN 2" :	INT := 6;
+"X1.7 PIN 2" :	INT := 7;
+"X1.0 PIN 4" :	INT := 8;
+"X1.1 PIN 4" :	INT := 9;
+"X1.2 PIN 4" :	INT := 10;
+"X1.3 PIN 4" :	INT := 11;
+"X1.4 PIN 4" :	INT := 12;
+"X1.5 PIN 4" :	INT := 13;
+"X1.6 PIN 4" :	INT := 14;
+"X1.7 PIN 4" :	INT := 15;
 END_VAR
 
 // SCATTER
