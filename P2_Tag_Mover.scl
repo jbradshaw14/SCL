@@ -1,0 +1,9 @@
+// MOV-100
+"MB_DATA".mbData[0].wData[0] := "Outputs"."MOV-100".Output;
+"Outputs"."MOV-100".Feedback1 := "MB_Data".mbData[1].wData[0];
+"Outputs"."MOV-100".Feedback2 := "MB_Data".mbData[2].wData[0];
+
+// MOV-101
+"MB_DATA".mbData[3].wData[0] := "Outputs"."MOV-101".Output;
+"Outputs"."MOV-101".Feedback1 := "MB_Data".mbData[4].wData[0];
+"Outputs"."MOV-101".Feedback2 := "MB_Data".mbData[5].wData[0];
