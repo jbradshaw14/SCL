@@ -1,0 +1,72 @@
+// LT-000
+"Inputs"."LT-000".Scaled:=(INT_TO_REAL("LT-000R")-"CONFIG"."LT-000".Min)/("CONFIG"."LT-000".Max-"CONFIG"."LT-000".Min)*100.0;
+"Alarm_Logic"(alarmON := "Supply".State.Auto,
+              Config := "CONFIG"."LT-000",
+              AI := "Inputs"."LT-000");
+
+//LT-200
+"Inputs"."LT-200".Scaled := (INT_TO_REAL(WORD_TO_INT("LT-200R")) - "CONFIG"."LT-200".Min) / ("CONFIG"."LT-200".Max - "CONFIG"."LT-200".Min) * 100.0;
+"Alarm_Logic"(alarmON := "RO1".State.Auto,
+              Config := "CONFIG"."LT-200",
+              AI := "Inputs"."LT-200");
+
+//LT-500
+"Inputs"."LT-500".Scaled := (INT_TO_REAL("LT-500R") - "CONFIG"."LT-500".Min) / ("CONFIG"."LT-500".Max - "CONFIG"."LT-500".Min) * 100.0;
+"Alarm_Logic"(alarmON := "RO2".State.Auto,
+              Config := "CONFIG"."LT-500",
+              AI := "Inputs"."LT-500");
+
+// LT-501
+"Inputs"."LT-501".Scaled := (INT_TO_REAL("LT-501R") - "CONFIG"."LT-501".Min) / ("CONFIG"."LT-501".Max - "CONFIG"."LT-501".Min) * 100.0;
+"Alarm_Logic"(alarmON := "Deionizer".State.Auto,
+              Config := "CONFIG"."LT-501",
+              AI := "Inputs"."LT-500");
+
+// PH-200
+"Inputs"."PH-200".Scaled := (INT_TO_REAL(WORD_TO_INT("PH-200R")) - "CONFIG"."PH-200".Min) / ("CONFIG"."PH-200".Max - "CONFIG"."PH-200".Min) * 14.0;
+"Alarm_Logic"(alarmON := "RO1".State.Auto,
+              Config := "CONFIG"."PH-200",
+              AI := "Inputs"."PH-200");
+
+// ORP-100
+"Inputs"."ORP-100".Scaled := ((INT_TO_REAL(WORD_TO_INT("ORP-100R")) - "CONFIG"."ORP-100".Min) / ("CONFIG"."ORP-100".Max - "CONFIG"."ORP-100".Min) * 4000.0) - 2000.0;
+"Alarm_Logic"(alarmON := "Pretreatment".State.Auto,
+              Config := "CONFIG"."ORP-100",
+              AI := "Inputs"."ORP-100");
+//*************************************************************************************************************************************
+//FT-500 1.3-26.4 GPM*
+//"Inputs"."FT-500".Scaled := INT_TO_REAL("FT-500R") - "CONFIG"."FT-500".Min) / ("CONFIG"."FT-500".Max - "CONFIG".FT CONFIG"."FT-500".Offset;
+//CND-200 0-1000 uS
+"Inputs"."CND-200".Scaled := INT_TO_REAL(WORD_TO_INT("CND-200R")) / "CONFIG"."CND-200".Coefficient + "CONFIG"."CND-200".Offset;
+"Alarm_Logic"(alarmON := "RO1".State.Auto,
+              Config := "CONFIG"."CND-200",
+              AI := "Inputs"."CND-200");
+
+//CND-201 0-50 uS R
+"Inputs"."CND-201".Scaled := INT_TO_REAL(WORD_TO_INT("CND-201R")) / "CONFIG"."CND-201".Coefficient;
+"Alarm_Logic"(alarmON := "RO1".State.Auto,
+              Config := "CONFIG"."CND-201",
+              AI := "Inputs"."CND-201");
+
+//CND-300 0-50 uS 
+"Inputs"."CND-300".Scaled := INT_TO_REAL(WORD_TO_INT("CND-300R")) / "CONFIG"."CND-300".Coefficient;
+"Alarm_Logic"(alarmON := "RO2".State.Auto,
+              Config := "CONFIG"."CND-300",
+              AI := "Inputs"."CND-300"); 
+
+//CND-301 0-10 uS
+"Inputs"."CND-301".Scaled := INT_TO_REAL(WORD_TO_INT("CND-301R")) / "CONFIG"."CND-301".Coefficient;
+"Alarm_Logic"(alarmON := "RO2".State.Auto,
+              Config := "CONFIG"."CND-301",
+              AI := "Inputs"."CND-301");
+
+// CND-500 0-5 uS
+"Inputs"."CND-500".Scaled := INT_TO_REAL("CND-500R") / "CONFIG"."CND-500".Coefficient;
+"Alarm_Logic"(alarmON := "Deionizer".State.Auto,
+              Config := "CONFIG"."CND-500",
+              AI := "Inputs"."CND-500");
+
+//Feed Flow 
+"Inputs".FeedFlowRO1 := "Inputs"."FT-200".Scaled - "Inputs"."FT-205".Scaled;
+"Inputs".FeedFlowRO2 := "Inputs"."FT-300".Scaled - "Inputs"."FT-305".Scaled;
+

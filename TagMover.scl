@@ -1,0 +1,199 @@
+// Modbus********************************************
+
+// Idec 1
+"MB_DATA".mbData[0].wData[0] := "Outputs"."Idec1 Output";
+"Outputs"."Idec1 Feedback" :="MB_DATA".mbData[1].wData[0];
+
+// Idec 2
+"MB_DATA".mbData[2].wData[0] := "Outputs"."Idec2 Output";
+"Outputs"."Idec2 Feedback":="MB_DATA".mbData[3].wData[0];
+
+// Idec 3
+"MB_DATA".mbData[4].wData[0] := "Outputs"."Idec3 Output";
+"Outputs"."Idec3 Feedback" :="MB_DATA".mbData[5].wData[0];
+
+// Idec 4
+"MB_DATA".mbData[6].wData[0] := "Outputs"."Idec4 Output";
+"Outputs"."Idec4 Feedback" :="MB_DATA".mbData[7].wData[0];
+
+// VFD/P-200
+"MB_DATA".mbData[8].wData[0] := "Outputs"."P-200".Run;
+"MB_DATA".mbData[9].wData[0] := "Outputs"."P-200".Speed;
+"Outputs"."P-200".Status:="MB_DATA".mbData[10].wData[0];
+"Outputs"."P-200".Fault:="MB_DATA".mbData[11].wData[0];
+
+// VFD/P-300
+"MB_DATA".mbData[12].wData[0] := "Outputs"."P-300".Run;
+"MB_DATA".mbData[13].wData[0] := "Outputs"."P-300".Speed;
+"Outputs"."P-300".Status := "MB_DATA".mbData[14].wData[0];
+"Outputs"."P-300".Fault := "MB_DATA".mbData[15].wData[0];
+
+//***********************************************
+//Move Data from DB to PLC UserData PLC (I) Tags*
+//***********************************************
+"CND-200" := REAL_TO_INT(10.0 * "Inputs"."CND-200".Scaled);
+"CND-201" := REAL_TO_INT(10.0 * "Inputs"."CND-201".Scaled);
+"CND-300" := REAL_TO_INT(10.0 * "Inputs"."CND-300".Scaled);
+"CND-301" := REAL_TO_INT(10.0 * "Inputs"."CND-301".Scaled);
+"CND-500" := REAL_TO_INT(10.0 * "Inputs"."CND-500".Scaled);
+"FT-100" := REAL_TO_INT(10.0 * "Inputs"."FT-100".Scaled);
+"FT-101" := REAL_TO_INT(10.0 * "Inputs"."FT-101".Scaled);
+"FT-200" := REAL_TO_INT(10.0 * "Inputs"."FT-200".Scaled);
+"FT-201" := REAL_TO_INT(10.0 * "Inputs"."FT-201".Scaled);
+"FT-202" := REAL_TO_INT(10.0 * "Inputs"."FT-202".Scaled);
+"FT-205" := REAL_TO_INT(10.0 * "Inputs"."FT-205".Scaled);
+"FT-300" := REAL_TO_INT(10.0 * "Inputs"."FT-300".Scaled);
+"FT-301" := REAL_TO_INT(10.0 * "Inputs"."FT-301".Scaled);
+"FT-302" := REAL_TO_INT(10.0 * "Inputs"."FT-302".Scaled);
+"FT-305" := REAL_TO_INT(10.0 * "Inputs"."FT-305".Scaled);
+"FT-500" := REAL_TO_INT(10.0 * "Inputs"."FT-500".Scaled);
+"LT-000" := REAL_TO_INT(10.0 * "Inputs"."LT-000".Scaled);
+"LT-200" := REAL_TO_INT(10.0 * "Inputs"."LT-200".Scaled);
+"LT-500" := REAL_TO_INT(10.0 * "Inputs"."LT-500".Scaled);
+"LT-501" := REAL_TO_INT(10.0 * "Inputs"."LT-501".Scaled);
+"ORP-100" := REAL_TO_INT(10.0 * "Inputs"."ORP-100".Scaled);
+"PD-100" := REAL_TO_INT(10.0 * "Inputs"."PD-100".Scaled);
+"PD-101" := REAL_TO_INT(10.0 * "Inputs"."PD-101".Scaled);
+"PD-102" := REAL_TO_INT(10.0 * "Inputs"."PD-102".Scaled);
+"PD-103" := REAL_TO_INT(10.0 * "Inputs"."PD-103".Scaled);
+"PD-104" := REAL_TO_INT(10.0 * "Inputs"."PD-104".Scaled);
+"PD-200" := REAL_TO_INT(10.0 * "Inputs"."PD-200".Scaled);
+"PD-300" := REAL_TO_INT(10.0 * "Inputs"."PD-300".Scaled);
+"PH-200" := REAL_TO_INT(10.0 * "Inputs"."PH-200".Scaled);
+"PT-100" := REAL_TO_INT(10.0 * "Inputs"."PT-100".Scaled);
+"PT-101" := REAL_TO_INT(10.0 * "Inputs"."PT-101".Scaled);
+"PT-102" := REAL_TO_INT(10.0 * "Inputs"."PT-102".Scaled);
+"PT-103" := REAL_TO_INT(10.0 * "Inputs"."PT-103".Scaled);
+"PT-104" := REAL_TO_INT(10.0 * "Inputs"."PT-104".Scaled);
+"PT-105" := REAL_TO_INT(10.0 * "Inputs"."PT-105".Scaled);
+"PT-106" := REAL_TO_INT(10.0 * "Inputs"."PT-106".Scaled);
+"PT-107" := REAL_TO_INT(10.0 * "Inputs"."PT-107".Scaled);
+"PT-108" := REAL_TO_INT(10.0 * "Inputs"."PT-108".Scaled);
+"PT-200" := REAL_TO_INT(10.0 * "Inputs"."PT-200".Scaled);
+"PT-201" := REAL_TO_INT(10.0 * "Inputs"."PT-201".Scaled);
+"PT-202" := REAL_TO_INT(10.0 * "Inputs"."PT-202".Scaled);
+"PT-203" := REAL_TO_INT(10.0 * "Inputs"."PT-203".Scaled);
+"PT-300" := REAL_TO_INT(10.0 * "Inputs"."PT-300".Scaled);
+"PT-301" := REAL_TO_INT(10.0 * "Inputs"."PT-301".Scaled);
+"PT-302" := REAL_TO_INT(10.0 * "Inputs"."PT-302".Scaled);
+"PT-202" := REAL_TO_INT(10.0 * "Inputs"."PT-202".Scaled);
+"REC-200" := REAL_TO_INT(10.0 * "Inputs"."REC-200".Scaled);
+"REC-300" := REAL_TO_INT(10.0 * "Inputs"."REC-300".Scaled);
+"TT-100" := REAL_TO_INT(10.0 * "Inputs"."TT-100".Scaled);
+"PT-100" := REAL_TO_INT(10.0 * "Inputs"."PT-100".Scaled);
+
+// LSL
+if "Inputs"."LSL-100" then
+    "LSL-100" := 1;
+else
+    "LSL-100" := 0;
+end_if;
+if "Inputs"."LSL-200" then
+    "LSL-200" := 1;
+else
+    "LSL-200" := 0;
+end_if;
+if "Inputs"."LSL-201" then
+    "LSL-201" := 1;
+else
+    "LSL-201" := 0;
+end_if;
+
+// Outputs
+if "P-000 Q" then
+    "P-000" := 1;
+else
+    "P-000" := 0;
+end_if;
+"P-200 RUN" := WORD_TO_INT("Outputs"."P-200".Run);
+"P-200 SPEED" := WORD_TO_INT("Outputs"."P-200".Speed);
+"P-300 RUN" := WORD_TO_INT("Outputs"."P-300".Run);
+"P-300 SPEED" := WORD_TO_INT("Outputs"."P-300".Speed);
+if "P-500 Q" then
+    "P-500" := 1;
+else
+    "P-500" := 0;
+end_if;
+
+"MP-100" := "MP-100 Q";
+"MP-200" := "MP-200 Q";
+"MP-201" := "MP-201 Q";
+
+if "MOV-001 Q" then
+    "MOV-001" := 1;
+else
+    "MOV-001" := 0;
+end_if;
+if "Outputs"."MOV-100".OutputRelay then
+    "MOV-100" := 1;
+else
+    "MOV-100" := 0;
+end_if;
+if "Outputs"."MOV-200".OutputRelay then
+    "MOV-200" := 1;
+else
+    "MOV-200" := 0;
+end_if;
+if "Outputs"."MOV-201".OutputRelay then
+    "MOV-201" := 1;
+else
+    "MOV-201" := 0;
+end_if;
+if "Outputs"."MOV-204".OutputRelay then
+    "MOV-204" := 1;
+else
+    "MOV-204" := 0;
+end_if;
+if "Outputs"."MOV-300".OutputRelay then
+    "MOV-300" := 1;
+else
+    "MOV-300" := 0;
+end_if;
+if "Outputs"."MOV-301".OutputRelay then
+    "MOV-301" := 1;
+else
+    "MOV-301" := 0;
+end_if;
+if "MOV-500 Q" then
+    "MOV-500" := 1;
+else
+    "MOV-500" := 0;
+end_if;
+
+"MOV-202" := "MOV-202 Q";
+"MOV-203" := "MOV-203 Q";
+"MOV-302" := "MOV-302 Q";
+"MOV-303" := "MOV-303 Q";
+
+//******************************************
+
+// Remote Controls
+if "Permissive" = 1 then
+    "Plant".Permissive := true;
+else
+    "Plant".Permissive := false;
+end_if;
+
+// System Status
+if "General"."System Auto" then
+    "System Auto" := 1;
+else
+    "System Status" := 0;
+end_if;
+if "General"."System Alarm" then
+    "System Alarm" := 1;
+else
+    "System Alarm" := 0;
+end_if;
+if "General"."System Authorize" then
+    "System Authorize" := 1;
+else
+    "System Authorize" := 0;
+end_if;
+if "General"."System Alarm Shutdown" then
+    "System Alarm Shutdown" := 1;
+else
+    "System Alarm Shutdown" := 0;
+end_if;
+
+"System Status" := "General"."System Status";

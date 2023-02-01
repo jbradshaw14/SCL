@@ -25,7 +25,7 @@ FUNCTION "Analog_Input" : Void
     DEG_F : REAL := 0.025;     // type = 5
     IOLink_NO_DATA : INT := 32764;
     IOLink_OPEN_LINE : INT := 32760;
-    IOLink_UL : INT := - 32760;
+    IOLink_UL : INT := -32760;
     UNDER_CURRENT : INT := 3200;
     NO_SIGNAL : INT := 0;
   END_VAR

@@ -1,0 +1,64 @@
+// KEY : 0 = Analog (4-20mA) OR non-IOLink
+//     : 1 = High Pressure
+//     : 2 = Low Pressure
+//     : 3 = High Flow
+//     : 4 = Low Flow
+//     : 5 = Temp (Deg F)
+// Type : 0 -> non-IOLink
+//      : 1 -> IOLink enabled
+// FT
+"CONFIG"."FT-100".Type := 4;
+"CONFIG"."FT-101".Type := 4;
+"CONFIG"."FT-200".Type := 4;
+"CONFIG"."FT-201".Type := 4;
+"CONFIG"."FT-202".Type := 4;
+"CONFIG"."FT-300".Type := 4;
+"CONFIG"."FT-301".Type := 4;
+"CONFIG"."FT-302".Type := 4;
+"CONFIG"."FT-500".Type := 4;
+"CONFIG"."FT-100".isIOLink := true;
+"CONFIG"."FT-101".isIOLink := true;
+"CONFIG"."FT-200".isIOLink := true;
+"CONFIG"."FT-201".isIOLink := true;
+"CONFIG"."FT-202".isIOLink := true;
+"CONFIG"."FT-300".isIOLink := true;
+"CONFIG"."FT-301".isIOLink := true;
+"CONFIG"."FT-302".isIOLink := true;
+"CONFIG"."FT-500".isIOLink := true;
+// TT
+"CONFIG"."TT-100".Type := 5;
+// PT
+"CONFIG"."PT-100".Type := 2;
+"CONFIG"."PT-101".Type := 2;
+"CONFIG"."PT-102".Type := 2;
+"CONFIG"."PT-103".Type := 2;
+"CONFIG"."PT-104".Type := 2;
+"CONFIG"."PT-105".Type := 2;
+"CONFIG"."PT-106".Type := 2;
+"CONFIG"."PT-107".Type := 2;
+"CONFIG"."PT-108".Type := 2;
+"CONFIG"."PT-200".Type := 2;
+"CONFIG"."PT-201".Type := 1;
+"CONFIG"."PT-202".Type := 2;
+"CONFIG"."PT-203".Type := 1;
+"CONFIG"."PT-300".Type := 2;
+"CONFIG"."PT-301".Type := 1;
+"CONFIG"."PT-302".Type := 2;
+"CONFIG"."PT-303".Type := 1;
+"CONFIG"."PT-100".isIOLink := true;
+"CONFIG"."PT-101".isIOLink := true;
+"CONFIG"."PT-102".isIOLink := true;
+"CONFIG"."PT-103".isIOLink := true;
+"CONFIG"."PT-104".isIOLink := true;
+"CONFIG"."PT-105".isIOLink := true;
+"CONFIG"."PT-106".isIOLink := true;
+"CONFIG"."PT-107".isIOLink := true;
+"CONFIG"."PT-108".isIOLink := true;
+"CONFIG"."PT-200".isIOLink := true;
+"CONFIG"."PT-201".isIOLink := true;
+"CONFIG"."PT-202".isIOLink := true;
+"CONFIG"."PT-203".isIOLink := true;
+"CONFIG"."PT-300".isIOLink := true;
+"CONFIG"."PT-301".isIOLink := true;
+"CONFIG"."PT-302".isIOLink := true;
+"CONFIG"."PT-303".isIOLink := true;

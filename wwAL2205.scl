@@ -1,0 +1,37 @@
+// Set Portmode Configuration
+// 0: DI 1: 4-20mA 2: DX 3: 0-10V
+
+// MOD 02-00
+"Mod 0 PortmodeX0_1" := 1; // DI on PORT 0, AI on PORT 1
+"Mod 0 PortmodeX2_3" := 257; // AI on PORT 2, AI on PORT 3 // 0000 0001 0000 0001
+"Mod 0 PortmodeX4_5" := 0; // DI on PORT 4, DI on PORT 5
+"Mod 0 PortmodeX6_7" := 0;
+// MOD 02-01
+"Mod 1 PortmodeX0_1" := 2; // DI on PORT 0, DX on PORT 1
+"Mod 1 PortmodeX2_3" := 3; // DI on PORT 2, DX on PORT 3
+"Mod 1 PortmodeX4_5" := 0;
+"Mod 1 PortmodeX6_7" := 0;
+
+"Inputs"."LSL-100" := #"DI Word 1"[0];
+"Inputs"."LSL-101" := #"DI Word 1"[8];
+"Inputs"."LSL-200" := #"DI Word 1"[2];
+
+// MBFV-100
+#"DX Word 2"[1] := "Outputs"."MBFV-200".OutputRelay;
+"Outputs"."MBFV-200".InputRelayOpen := #"DI Word 2"[9];
+"Outputs"."MBFV-200".InputRelayClosed := #"DI Word 2"[1];
+
+// MOV-201
+#"DX Word 2"[9] := "Outputs"."MOV-201".OutputRelay;
+"Outputs"."MOV-201".InputRelayOpen := #"DI Word 2"[10];
+"Outputs"."MOV-201".InputRelayClosed := #"DI Word 2"[2];
+
+// MOV-300
+#"DX Word 2"[3] := "Outputs"."MOV-300".OutputRelay;
+"Outputs"."MOV-300".InputRelayOpen := #"DI Word 2"[12];
+"Outputs"."MOV-300".InputRelayClosed := #"DI Word 2"[4];
+
+//MOV-301
+#"DX Word 2"[11] := "Outputs"."MOV-301".OutputRelay;
+"Outputs"."MOV-301".InputRelayOpen := #"DI Word 2"[14];
+"Outputs"."MOV-301".InputRelayClosed := #"DI Word 2"[6];

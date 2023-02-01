@@ -1,0 +1,16 @@
+#AlarmList[0] := "Alarms"."FT-300".AlarmWord;
+#AlarmList[1] := "Alarms"."FT-301".AlarmWord;
+#AlarmList[2] := "Alarms"."FT-302".AlarmWord;
+#AlarmList[3] := "Alarms"."PT-300".AlarmWord;
+#AlarmList[4] := "Alarms"."PT-301".AlarmWord;
+#AlarmList[5] := "Alarms"."PT-302".AlarmWord;
+#AlarmList[6] := "Alarms"."PD-300".AlarmWord;
+#AlarmList[7] := "Alarms"."PD-301".AlarmWord;
+#AlarmList[8] := "Alarms"."PD-302".AlarmWord;
+#AlarmList[9] := "Alarms"."CND-300".AlarmWord;
+#AlarmList[10] := "Alarms"."CND-301".AlarmWord;
+#AlarmList[11] := "Alarms"."MOV-300";
+#AlarmList[12] := "Alarms"."MOV-302";
+#AlarmList[13] := "Alarms"."MBFV-201";
+#AlarmList[14] := "Alarms"."P-300";
+#AlarmList[15] := 0;

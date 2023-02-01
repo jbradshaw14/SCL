@@ -1,116 +1,116 @@
 VAR
-    mbCommLoad: "udt_ModbusCommLoad";
-    mbMaster: "udt_ModbusMaster";
-    iStep: Int;
-    iDataCurrent: Int;
-    bPortTrigger: R_TRIG;
-    iReadError: Word;
+    mbCommLoad : "udt_ModbusCommLoad";
+    mbMaster : "udt_ModbusMaster";
+    iStep : INT;
+    iDataCurrent : INT;
+    bPortTrigger : R_TRIG;
+    iReadError : WORD;
 END_VAR
 
 VAR_TEMP
-    iLoopSize: Int; 
+    iLoopSize : INT;
 END_VAR
 
 
 // Set initial parameters
 #iLoopSize := "MB_DATA".iLoopCounter;
-if #iStep = 0 then
+IF #iStep = 0 THEN
     #iDataCurrent := 0;
     #iStep := 1;
-end_if;
-#trigPortTrigger(CLK := not #mbCommLoad.done);
+END_IF;
+#trigPortTrigger(CLK := NOT #mbCommLoad.done);
 
 // Set port configuration
-"MB_COMM_LOAD_DB"(REQ:="FirstScan" or #trigPortTrigger.Q,
-                  "PORT":="Local~CB_1241_(RS485)",
-                  BAUD:=9600,
-                  PARITY:=0,
-                  FLOW_CTRL:=0,
-                  DONE=>#mbCommLoad.done,
-                  ERROR=>#mbCommLoad.error,
-                  STATUS=>#mbCommLoad.status,
-                  MB_DB:="MB_MASTER_DB");
-if #mbCommLoad.error then
+"MB_COMM_LOAD_DB"(REQ := "FirstScan" OR #trigPortTrigger.Q,
+                  "PORT" := "Local~CB_1241_(RS485)",
+                  BAUD := 9600,
+                  PARITY := 0,
+                  FLOW_CTRL := 0,
+                  DONE => #mbCommLoad.done,
+                  ERROR => #mbCommLoad.error,
+                  STATUS => #mbCommLoad.status,
+                  MB_DB := "MB_MASTER_DB");
+IF #mbCommLoad.error THEN
     #mbCommLoad.errorStatus := #mbCommLoad.status;
-end_if;
+END_IF;
 // Set master configuration
-"MB_MASTER_DB"(REQ:=#mbMaster.req,
-           MB_ADDR:=#mbMaster.mbAddr,
-           MODE:=#mbMaster.mode,
-           DATA_ADDR:=#mbMaster.dataAddr,
-           DATA_LEN:=#mbMaster.dataLen,
-           DONE=>#mbMaster.done,
-           BUSY=>#mbMaster.busy,
-           ERROR=>#mbMaster.error,
-           STATUS=>#mbMaster.status,
-           DATA_PTR:="MB_DATA".wDataPtr);
-if #mbMaster.error then
+"MB_MASTER_DB"(REQ := #mbMaster.req,
+           MB_ADDR := #mbMaster.mbAddr,
+           MODE := #mbMaster.mode,
+           DATA_ADDR := #mbMaster.dataAddr,
+           DATA_LEN := #mbMaster.dataLen,
+           DONE => #mbMaster.done,
+           BUSY => #mbMaster.busy,
+           ERROR => #mbMaster.error,
+           STATUS => #mbMaster.status,
+           DATA_PTR := "MB_DATA".wDataPtr);
+IF #mbMaster.error THEN
     #mbMaster.errorStatus := #mbMaster.status;
-end_if;
+END_IF;
 
 
-if #iStep = 1 then
-    if "MB_DATA".mbData[#iDataCurrent].bReadOrWrite then
+IF #iStep = 1 THEN
+    IF "MB_DATA".mbData[#iDataCurrent].bReadOrWrite THEN
         #iStep := 2;
-    else
+    ELSE
         #iStep := 4;
-    end_if;
-end_if;
+    END_IF;
+END_IF;
 
 // Set write addresses and trigger write
-if #iStep = 2 then
+IF #iStep = 2 THEN
     #mbMaster.mode := 1;
     #mbMaster.dataAddr := "MB_DATA".mbData[#iDataCurrent].iDataAddres;
     #mbMaster.mbAddr := "MB_DATA".mbData[#iDataCurrent].imbAddress;
     #mbMaster.dataLen := "MB_DATA".mbData[#iDataCurrent].iDataLength;
     "MB_DATA".wDataPtr := "MB_DATA".mbData[#iDataCurrent].wData;
-    #mbMaster.req := #mbMaster.req or true;
-    if #mbMaster.busy or #mbMaster.error then
+    #mbMaster.req := #mbMaster.req OR TRUE;
+    IF #mbMaster.busy OR #mbMaster.error THEN
         #iStep := 3;
-    end_if;
-end_if;
+    END_IF;
+END_IF;
 // Reset write command and write sequence
-if #iStep = 3 and #mbMaster.done then
-    #mbMaster.req := #mbMaster.req and false;
+IF #iStep = 3 AND #mbMaster.done THEN
+    #mbMaster.req := #mbMaster.req AND FALSE;
     #iStep := 1;
     #iDataCurrent := #iDataCurrent + 1;
-    if #iDataCurrent >= (#iLoopSize) then
+    IF #iDataCurrent >= (#iLoopSize) THEN
         #iDataCurrent := 0;
-    end_if;
-elsif #iStep = 3 and #mbMaster.error then
-    #mbMaster.req := #mbMaster.req and false;
+    END_IF;
+ELSIF #iStep = 3 AND #mbMaster.error THEN
+    #mbMaster.req := #mbMaster.req AND FALSE;
     #iStep := 1;
     #iDataCurrent := #iDataCurrent + 1;
-    if #iDataCurrent >= (#iLoopSize) then
+    IF #iDataCurrent >= (#iLoopSize) THEN
         #iDataCurrent := 0;
-    end_if;
-end_if;
+    END_IF;
+END_IF;
 // Set read addresses and trigger read
-if #iStep = 4 then
+IF #iStep = 4 THEN
     #mbMaster.mode := 0;
     #mbMaster.dataAddr := "MB_DATA".mbData[#iDataCurrent].iDataAddres;
     #mbMaster.mbAddr := "MB_DATA".mbData[#iDataCurrent].imbAddress;
     #mbMaster.dataLen := "MB_DATA".mbData[#iDataCurrent].iDataLength;
-    #mbMaster.req := #mbMaster.req or true;
-    if #mbMaster.busy or #mbMaster.error then
+    #mbMaster.req := #mbMaster.req OR TRUE;
+    IF #mbMaster.busy OR #mbMaster.error THEN
         #iStep := 5;
-    end_if;
-end_if;
+    END_IF;
+END_IF;
 // Reset read request and start sequence again
-if #iStep = 5 and #mbMaster.done then
+IF #iStep = 5 AND #mbMaster.done THEN
     "MB_DATA".mbData[#iDataCurrent].wData := "MB_DATA".wDataPtr;
-    #mbMaster.req := #mbMaster.req and false;
+    #mbMaster.req := #mbMaster.req AND FALSE;
     #iStep := 1;
     #iDataCurrent := #iDataCurrent + 1;
-    if #iDataCurrent >= (#iLoopSize) then
+    IF #iDataCurrent >= (#iLoopSize) THEN
         #iDataCurrent := 0;
-    end_if;
-elsif #iStep = 5 and #mbMaster.error then
-    #mbMaster.req := #mbMaster.req and false;
+    END_IF;
+ELSIF #iStep = 5 AND #mbMaster.error THEN
+    #mbMaster.req := #mbMaster.req AND FALSE;
     #iStep := 1;
     #iDataCurrent := #iDataCurrent + 1;
     #iReadError := #mbMaster.status;
-    if #iDataCurrent >= (#iLoopSize) then
+    IF #iDataCurrent >= (#iLoopSize) THEN
         #iDataCurrent := 0;
-    end_if;
-end_if;
+    END_IF;
+END_IF;

@@ -1,0 +1,53 @@
+// Idec 1
+if #Req_Backwash_UI[0] or #Backwash_PI[0] and not #Interlock[1] and not "Outputs"."Idec1 Feedback" = 1 then
+    "Outputs"."Idec1 Output" := 1;
+else
+    "Outputs"."Idec1 Output" := 0;
+end_if;
+
+if "Outputs"."Idec1 Output" = 1 or "Outputs"."Idec1 Feedback" = 1 then
+    #Interlock[0] := true;
+else
+    #Interlock[0] := false;
+end_if;
+
+// Idec 2
+if #Req_Backwash_UI[1] or #Backwash_PI[1] and not #Interlock[0] and not "Outputs"."Idec2 Feedback" = 1 then
+    "Outputs"."Idec2 Output" := 1;
+else
+    "Outputs"."Idec2 Output" := 0;
+end_if;
+    
+if "Outputs"."Idec2 Output" = 1 or "Outputs"."Idec2 Feedback" = 1 then
+    #Interlock[1] := true;
+else
+    #Interlock[1] := false;
+end_if;
+
+// Idec 3
+if #Req_Backwash_UI[2] or #Backwash_PI[2] and not #Interlock[3] and not "Outputs"."Idec3 Feedback" then
+    "Outputs"."Idec3 Output" := 1;
+else
+    "Outputs"."Idec3 Output" := 0;
+end_if;
+
+if "Outputs"."Idec3 Output" = 1 or "Outputs"."Idec3 Feedback" = 1 then
+    #Interlock[2] := true;
+else
+    #Interlock[2] := false;
+end_if;
+
+// Idec 4
+if #Req_Backwash_UI[3] or #Backwash_PI[3] and not #Interlock[2] and not "Outputs"."Idec4 Feedback" then
+    "Outputs"."Idec4 Output" := 1;
+else
+    "Outputs"."Idec4 Output" := 0;
+end_if;
+
+if "Outputs"."Idec4 Output" = 1 or "Outputs"."Idec4 Feedback" = 1 then
+    #Interlock[3] := true;
+else
+    #interlock[3] := false;
+end_if;
+
+

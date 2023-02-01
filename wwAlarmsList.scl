@@ -1,0 +1,40 @@
+// RO1
+#AlarmsList[0] := "Alarms"."FT-200".AlarmWord;
+#AlarmsList[1] := "Alarms"."FT-201".AlarmWord;
+#AlarmsList[2] := "Alarms"."FT-202".AlarmWord;
+#AlarmsList[3] := "Alarms"."FT-203".AlarmWord;
+#AlarmsList[4] := "Alarms"."CND-200".AlarmWord;
+#AlarmsList[5] := "Alarms"."CND-201".AlarmWord;
+#AlarmsList[6] := "Alarms"."CND-202".AlarmWord;
+#AlarmsList[7] := "Alarms"."PD-202".AlarmWord;
+#AlarmsList[8] := "Alarms"."PD-203".AlarmWord;
+#AlarmsList[9] := "Alarms"."PD-204".AlarmWord;
+#AlarmsList[10] := "Alarms"."PT-200".AlarmWord;
+#AlarmsList[11] := "Alarms"."PT-201".AlarmWord;
+#AlarmsList[12] := "Alarms"."PT-203".AlarmWord;
+#AlarmsList[13] := "Alarms"."P-200";
+#AlarmsList[14] := "Alarms"."P-201";
+#AlarmsList[15] := "Alarms"."MOV-200";
+#AlarmsList[16] := "Alarms"."MOV-201";
+
+// RO2
+#AlarmsList[0] := "Alarms"."FT-300".AlarmWord;
+#AlarmsList[1] := "Alarms"."FT-301".AlarmWord;
+#AlarmsList[2] := "Alarms"."FT-302".AlarmWord;
+#AlarmsList[3] := "Alarms"."FT-303".AlarmWord;
+#AlarmsList[4] := "Alarms"."CND-300".AlarmWord;
+#AlarmsList[5] := "Alarms"."CND-301".AlarmWord;
+#AlarmsList[6] := "Alarms"."CND-302".AlarmWord;
+#AlarmsList[7] := "Alarms"."PD-302".AlarmWord;
+#AlarmsList[8] := "Alarms"."LT-300".AlarmWord;
+#AlarmsList[9] := "Alarms"."PD-304".AlarmWord;
+#AlarmsList[10] := "Alarms"."PT-300".AlarmWord;
+#AlarmsList[11] := "Alarms"."PT-301".AlarmWord;
+#AlarmsList[12] := "Alarms"."PT-303".AlarmWord;
+#AlarmsList[13] := "Alarms"."P-300";
+#AlarmsList[14] := "Alarms"."P-301";
+#AlarmsList[15] := "Alarms"."MOV-300";
+#AlarmsList[16] := "Alarms"."MOV-301";
+#AlarmsList[17] := "Alarms"."CND-303".AlarmWord;
+#AlarmsList[18] := "Alarms"."PT-304".AlarmWord;
+#AlarmsList[19] := "Alarms"."CND-303".AlarmWord;

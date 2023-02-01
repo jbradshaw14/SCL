@@ -1,1 +1,120 @@
+VAR_INPUT
+    iLoopSize : INT;
+END_VAR
+
+VAR_IN_OUT
+    Device  : "udt_TCPDataStructure";
+END_VAR
+
+VAR
+    data : "udt_TCPDataType";
+    trigPortTrigger : R_TRIG;
+    iStep : INT;
+    iDataCurrent : INT;
+    iReadError : WORD;
+    iMode : USINT;
+    MB_CLIENT_CONFIG : MB_CLIENT;
+END_VAR
+
 // Set Initial Parameters
+IF #iStep = 0 THEN
+    #iDataCurrent := 0;
+    #iStep := 1;
+END_IF;
+
+// call modbus TCP client connect
+#trigPortTrigger(CLK := NOT #Device.Done);
+"MB_TCP_CLIENT_DB"(REQ := "FirstScan" OR #trigPortTrigger.Q,
+                   DISCONNECT := #Device.Disconnect,
+                   MB_MODE := #data.mode,
+                   MB_DATA_ADDR := #data.dataAddress,
+                   MB_DATA_LEN := #data.dataLen,
+                   DONE => #Device.Done,
+                   BUSY => #Device.Busy,
+                   ERROR => #Device.Error,
+                   STATUS => #Device.Status,
+                   MB_DATA_PTR := #Device.dataPtr,
+                   CONNECT := #Device.Connect);
+IF #Device.Error THEN
+    #Device.ErrorStatus := #Device.Status;
+END_IF;
+
+// call modbus TCP client configured
+#MB_CLIENT_CONFIG(REQ := #data.req,
+                  DISCONNECT := #Device.Disconnect,
+                  MB_MODE := #data.mode,
+                  MB_DATA_ADDR := #data.dataAddress,
+                  MB_DATA_LEN := #data.dataLen,
+                  DONE => #Device.Done,
+                  BUSY => #Device.Busy,
+                  ERROR => #Device.Error,
+                  STATUS => #Device.Status,
+                  MB_DATA_PTR := #Device.dataPtr,
+                  CONNECT := #Device.Config);
+
+IF #iStep = 1 THEN
+    IF #Device.mbData[#iDataCurrent].rw THEN
+        #iStep := 2;
+    ELSE
+        #iStep := 4;
+    END_IF;
+END_IF;
+
+// Set write addresses and trigger write
+IF #iStep = 2 THEN
+    #data.mode := 1;
+    #data.dataAddress := #Device.mbData[#iDataCurrent].dataAddress;
+    #data.dataLen := #Device.mbData[#iDataCurrent].dataLen;
+    #Device.dataPtr := #Device.mbData[#iDataCurrent].data;
+    #data.req := #data.req OR TRUE;
+    IF #Device.Busy OR #Device.Error THEN
+        #iStep := 3;
+    END_IF;
+END_IF;
+
+// Reset write command and write sequence
+IF #iStep = 3 AND #Device.Done THEN
+    #data.req := #data.req AND FALSE;
+    #iStep := 1;
+    #iDataCurrent := #iDataCurrent + 1;
+    IF #iDataCurrent >= (#iLoopSize) THEN
+        #iDataCurrent := 0;
+    END_IF;
+ELSIF #iStep = 3 AND #Device.Error THEN
+    #data.req := #data.req AND FALSE;
+    #iStep := 1;
+    #iDataCurrent := #iDataCurrent + 1;
+    IF #iDataCurrent >= (#iLoopSize) THEN
+        #iDataCurrent := 0;
+    END_IF;
+END_IF;
+
+// Set read addresses and trigger read
+IF #iStep = 4 THEN
+    #data.mode := 0;
+    #data.dataAddress := #Device.mbData[#iDataCurrent].dataAddress;
+    #data.dataLen := #Device.mbData[#iDataCurrent].dataLen;
+    #data.req := #data.req OR TRUE;
+    IF #Device.Busy OR #Device.Error THEN
+        #iStep := 5;
+    END_IF;
+END_IF;
+
+// Reset read request and start sequence again
+IF #iStep = 5 AND #Device.Done THEN
+    #Device.mbData[#iDataCurrent].data := #Device.dataPtr;
+    #data.req := #data.req AND FALSE;
+    #iStep := 1;
+    #iDataCurrent := #iDataCurrent + 1;
+    IF #iDataCurrent >= (#iLoopSize) THEN
+        #iDataCurrent := 0;
+    END_IF;
+ELSIF #iStep = 5 AND #Device.Error THEN
+    #data.req := #data.req AND FALSE;
+    #iStep := 1;
+    #iDataCurrent := #iDataCurrent + 1;
+    #iReadError := #Device.Status;
+    IF #iDataCurrent >= (#iLoopSize) THEN
+        #iDataCurrent := 0;
+    END_IF;
+END_IF;
